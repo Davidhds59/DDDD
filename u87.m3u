@@ -1,9 +1,6 @@
 #EXTM3U
 
-#PLAYLISTV: pltv-logo="https://playeriptv.com/assets/favicons/apple-icon-120x120.png" pltv-name="Reproductor Simple IPTV" pltv-description="Reproductor Simple IPTV - PlayList Exportada por la aplicación Reproductor Simple IPTV - Descarga en PlayStore!" pltv-cover="https://playeriptv.com/assets/fundo-mini.png" pltv-author="Reproductor Simple IPTV" pltv-site="https://playeriptv.com/app"
 
-#EXTINF:-1 tvg-logo="https://playeriptv.com/assets/favicons/apple-icon-120x120.png" group-title="Reproductor Simple IPTV", PlayList Exportada por la aplicación Reproductor Simple IPTV - Descarga en PlayStore!
-https://playeriptv.com/app
 
 #EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Sin categoría", Pluto TV Cine Acción
 http://stitcher-ipv4.pluto.tv/v1/stitch/embed/hls/channel/5dcb62e63d4d8f0009f36881/master.m3u8?deviceType=samsung-tvplus&deviceMake=samsung&deviceModel=samsung&deviceVersion=unknown&appVersion=unknown&deviceLat=0&deviceLon=0&deviceDNT=%7BTARGETOPT%7D&deviceId=%7BPSID%7D&advertisingId=%7BPSID%7D&us_privacy=1YNY&samsung_app_domain=%7BAPP_DOMAIN%7D&samsung_app_name=%7BAPP_NAME%7D&profileLimit=&profileFloor=&embedPartner=samsung-tvplus
