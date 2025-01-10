@@ -1,9 +1,5 @@
 #EXTM3U
 
-#PLAYLISTV: pltv-logo="https://playeriptv.com/assets/favicons/apple-icon-120x120.png" pltv-name="Reproductor Simple IPTV" pltv-description="Reproductor Simple IPTV - PlayList Exportada por la aplicación Reproductor Simple IPTV - Descarga en PlayStore!" pltv-cover="https://playeriptv.com/assets/fundo-mini.png" pltv-author="Reproductor Simple IPTV" pltv-site="https://playeriptv.com/app"
-
-#EXTINF:-1 tvg-logo="https://playeriptv.com/assets/favicons/apple-icon-120x120.png" group-title="Reproductor Simple IPTV", PlayList Exportada por la aplicación Reproductor Simple IPTV - Descarga en PlayStore!
-https://playeriptv.com/app
 
 #EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Sin categoría", The Walking Dead 24/7
 http://cfd-v4-service-channel-stitcher-use1-1.prd.pluto.tv/stitch/hls/channel/5e82bb378601b80007b4bd78/master.m3u8?appName=web&appVersion=unknown&clientTime=0&deviceDNT=0&deviceId=6c2c4cd3-30d3-11ef-9cf5-e9ddff8ff496&deviceMake=Chrome&deviceModel=web&deviceType=web&deviceVersion=unknown&includeExtendedEvents=false&serverSideAds=false&sid=223ef689-92ba-46c9-9fc3-aa575c675e5c&checkedby:iptvcat.com
