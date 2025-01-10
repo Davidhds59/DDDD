@@ -1,0 +1,59 @@
+#EXTM3U
+
+
+EXTINF:0 tvg-id=»The Walking Dead 24/7» tvg-logo=»http://imgfz.com/i/WsFZcKn.png» group-title=»Cine», The Walking Dead 24/7
+http://cfd-v4-service-channel-stitcher-use1-1.prd.pluto.tv/stitch/hls/channel/5e82bb378601b80007b4bd78/master.m3u8?appName=web&appVersion=unknown&clientTime=0&deviceDNT=0&deviceId=6c2c4cd3-30d3-11ef-9cf5-e9ddff8ff496&deviceMake=Chrome&deviceModel=web&deviceType=web&deviceVersion=unknown&includeExtendedEvents=false&serverSideAds=false&sid=223ef689-92ba-46c9-9fc3-aa575c675e5c&checkedby:iptvcat.com
+
+EXTINF:0 tvg-id=»RUN TIME MOVIES» tvg-logo=»http://imgfz.com/i/WsFZcKn.png» group-title=»Cine», RUN TIME MOVIES
+https://stream.ads.ottera.tv/playlist.m3u8?network_id=2649
+
+EXTINF:0 tvg-id=»RUN TIME CRIMEN» tvg-logo=»http://imgfz.com/i/WsFZcKn.png» group-title=»Cine», RUN TIME CRIMEN
+https://stream.ads.ottera.tv/playlist.m3u8?network_id=3527
+
+EXTINF:0 tvg-id=»RUN TIME ROMANCE» tvg-logo=»http://imgfz.com/i/WsFZcKn.png» group-title=»Cine», RUN TIME ROMNCE
+https://stream.ads.ottera.tv/playlist.m3u8?network_id=3056
+
+EXTINF:0 tvg-id=»RUN TIME CLASICO» tvg-logo=»http://imgfz.com/i/WsFZcKn.png» group-title=»Cine», RUN TIME CLASICO
+https://stream.ads.ottera.tv/playlist.m3u8?network_id=3053
+
+EXTINF:0 tvg-id=»RUN TIME FAMILIA» tvg-logo=»http://imgfz.com/i/WsFZcKn.png» group-title=»Cine», RUN TIME FAMILIA 
+https://stream.ads.ottera.tv/playlist.m3u8?network_id=3528
+
+EXTINF:0 tvg-id=»RUN TIME TASH» tvg-logo=»http://imgfz.com/i/WsFZcKn.png» group-title=»Cine», RUN TIME TASH
+https://stream.ads.ottera.tv/playlist.m3u8?network_id=4647
+
+EXTINF:0 tvg-id=»RUN TIME ESPANTO» tvg-logo=»http://imgfz.com/i/WsFZcKn.png» group-title=»Cine», RUN TIME ESPANTO
+https://stream.ads.ottera.tv/playlist.m3u8?network_id=3529
+
+EXTINF:0 tvg-id=»EXTREMA TV» tvg-logo=»http://imgfz.com/i/WsFZcKn.png» group-title=»Cine», EXTREMA TV 
+http://livestreamcdn.net:1935/ExtremaTV/ExtremaTV/playlist.m3u8
+
+EXTINF:0 tvg-id=» WOW TV » tvg-logo=»http://imgfz.com/i/WsFZcKn.png» group-title=»Cine», WOW TV 
+http://cdn.elsalvadordigital.com:1935/wowtv/wowtv/playlist.m3u8
+
+EXTINF:0 tvg-id=» ORBIT TV » tvg-logo=»http://imgfz.com/i/WsFZcKn.png» group-title=»Cine», ORBIT TV
+https://ss3.domint.net:3134/otv_str/orbittv/chunklist_w1007774495.m3u8
+
+EXTINF:0 tvg-id=» SOMOS TOPO POINT » tvg-logo=»http://imgfz.com/i/WsFZcKn.png» group-title=»Cine», SOMOS TOPO POINT
+https://cloudflare.streamgato.us:3901/live/somostopopointtvlive.m3u8
+
+EXTINF:0 tvg-id=» CONECTA TV X » tvg-logo=»http://imgfz.com/i/WsFZcKn.png» group-title=»Cine», CONECTA TV MX
+https://stream8.mexiserver.com:19360/conectatvx/conectatvx.m3u8
+
+EXTINF:0 tvg-id=» MUNDO DE LA MÚSICA TV X » tvg-logo=»http://imgfz.com/i/WsFZcKn.png» group-title=»Cine», MUNDO DE LA MÚSICA 
+https://tv.streaming-chile.com:1936/mundodelamusica/mundodelamusica/playlist.m3u8
+
+EXTINF:0 tvg-id=» TELE RITMO » tvg-logo=»http://imgfz.com/i/WsFZcKn.png» group-title=»Cine», TELE RITMO 
+https://mdstrm.com/live-stream-playlist/57b4dc126338448314449d0c.m3u8
+
+EXTINF:0 tvg-id=» LOCOMOTION » tvg-logo=»http://imgfz.com/i/WsFZcKn.png» group-title=»Cine», LOCOMOTION
+http://51.222.85.85:81/hls/loco/index.m3u8
+
+EXTINF:0 tvg-id=» ZTV ANIME » tvg-logo=»http://imgfz.com/i/WsFZcKn.png» group-title=»Cine», ZTV ANIME
+https://mitv.zplay.cl/Ztv/index.m3u8
+
+EXTINF:0 tvg-id=» RETROMAGICO » tvg-logo=»http://imgfz.com/i/WsFZcKn.png» group-title=»Cine», RETROMAGICO
+https://ssh101.bozztv.com/ssh101/retromagicochnl/playlist.m3u8
+
+EXTINF:0 tvg-id=» SONY NOVELAS » tvg-logo=»http://imgfz.com/i/WsFZcKn.png» group-title=»Cine», SONY NOVELAS
+https://spt-novelas-2-us.roku.wurl.tv/playlist.m3u8
