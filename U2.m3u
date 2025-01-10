@@ -1,0 +1,64 @@
+#EXTM3U
+
+#PLAYLISTV: pltv-logo="https://playeriptv.com/assets/favicons/apple-icon-120x120.png" pltv-name="Reproductor Simple IPTV" pltv-description="Reproductor Simple IPTV - PlayList Exportada por la aplicación Reproductor Simple IPTV - Descarga en PlayStore!" pltv-cover="https://playeriptv.com/assets/fundo-mini.png" pltv-author="Reproductor Simple IPTV" pltv-site="https://playeriptv.com/app"
+
+#EXTINF:-1 tvg-logo="https://playeriptv.com/assets/favicons/apple-icon-120x120.png" group-title="Reproductor Simple IPTV", PlayList Exportada por la aplicación Reproductor Simple IPTV - Descarga en PlayStore!
+https://playeriptv.com/app
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Sin categoría", The Walking Dead 24/7
+http://cfd-v4-service-channel-stitcher-use1-1.prd.pluto.tv/stitch/hls/channel/5e82bb378601b80007b4bd78/master.m3u8?appName=web&appVersion=unknown&clientTime=0&deviceDNT=0&deviceId=6c2c4cd3-30d3-11ef-9cf5-e9ddff8ff496&deviceMake=Chrome&deviceModel=web&deviceType=web&deviceVersion=unknown&includeExtendedEvents=false&serverSideAds=false&sid=223ef689-92ba-46c9-9fc3-aa575c675e5c&checkedby:iptvcat.com
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Sin categoría", RUN TIME MOVIES
+https://stream.ads.ottera.tv/playlist.m3u8?network_id=2649
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Sin categoría", RUN TIME CRIMEN
+https://stream.ads.ottera.tv/playlist.m3u8?network_id=3527
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Sin categoría", RUN TIME ROMNCE
+https://stream.ads.ottera.tv/playlist.m3u8?network_id=3056
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Sin categoría", RUN TIME CLASICO
+https://stream.ads.ottera.tv/playlist.m3u8?network_id=3053
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Sin categoría", RUN TIME FAMILIA
+https://stream.ads.ottera.tv/playlist.m3u8?network_id=3528
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Sin categoría", RUN TIME TASH
+https://stream.ads.ottera.tv/playlist.m3u8?network_id=4647
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Sin categoría", RUN TIME ESPANTO
+https://stream.ads.ottera.tv/playlist.m3u8?network_id=3529
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Sin categoría", EXTREMA TV
+http://livestreamcdn.net:1935/ExtremaTV/ExtremaTV/playlist.m3u8
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Sin categoría", WOW TV
+http://cdn.elsalvadordigital.com:1935/wowtv/wowtv/playlist.m3u8
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Sin categoría", ORBIT TV
+https://ss3.domint.net:3134/otv_str/orbittv/chunklist_w1007774495.m3u8
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Sin categoría", SOMOS TOPO POINT
+https://cloudflare.streamgato.us:3901/live/somostopopointtvlive.m3u8
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Sin categoría", CONECTA TV MX
+https://stream8.mexiserver.com:19360/conectatvx/conectatvx.m3u8
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Sin categoría", MUNDO DE LA MÚSICA
+https://tv.streaming-chile.com:1936/mundodelamusica/mundodelamusica/playlist.m3u8
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Sin categoría", TELE RITMO
+https://mdstrm.com/live-stream-playlist/57b4dc126338448314449d0c.m3u8
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Sin categoría", LOCOMOTION
+http://51.222.85.85:81/hls/loco/index.m3u8
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Sin categoría", ZTV ANIME
+https://mitv.zplay.cl/Ztv/index.m3u8
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Sin categoría", RETROMAGICO
+https://ssh101.bozztv.com/ssh101/retromagicochnl/playlist.m3u8
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Sin categoría", SONY NOVELAS
+https://spt-novelas-2-us.roku.wurl.tv/playlist.m3u8
+
