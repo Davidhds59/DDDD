@@ -1,5 +1,9 @@
 #EXTM3U
-#EXTINF:-1,CAPITULO 1
-https://1a-1791.com/video/fwe2/f8/s8/2/8/p/J/F/8pJFw.aaa.mp4
-#EXTINF:-1,Capitulo 2
+#EXTINF:-1 group-title="Temporada 1",Capitulo 1
+https://hugh.cdn.rumble.cloud/video/fwe1/5e/s8/2/S/I/J/F/SIJFw.aaa.mp4
+#EXTINF:-1 group-title="Temporada 1",Capitulo 2
+https://hugh.cdn.rumble.cloud/video/fwe1/5e/s8/2/S/I/J/F/SIJFw.aaa.mp4
+#EXTINF:-1 group-title="Temporada 2",Capitulo 10
+https://hugh.cdn.rumble.cloud/video/fwe1/5e/s8/2/S/I/J/F/SIJFw.aaa.mp4
+#EXTINF:-1 group-title="Temporada 2",Capitulo 11
 https://hugh.cdn.rumble.cloud/video/fwe1/5e/s8/2/S/I/J/F/SIJFw.aaa.mp4
