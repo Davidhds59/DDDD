@@ -1,4 +1,29 @@
 #EXTM3U
+
+#EXTINF:-1 group-title=".",Cinema
+http://148.113.190.252:8000/play/a015/index.m3u8
+#EXTINF:-1 group-title=".",Popcorn
+https://freetv.stream.olympusatmedia.com:443/index1080p/partial.m3u8
+#EXTINF:-1 group-title=".",Canela Tv
+https://stream.ads.ottera.tv/playlist.m3u8?network_id=4847
+#EXTINF:-1 group-title=".",My Time España 
+https://appletree-mytimespain-rakuten.amagi.tv/playlist.m3u8
+#EXTINF:-1 group-title=".",My Time Mexico
+https://appletree-mytime-samsungmexico.amagi.tv/playlist.m3u8
+#EXTINF:-1 group-title=".",+cine
+https://tv.streaming-chile.com:19360/8142/8142.m3u8
+#EXTINF:-1 group-title=".",AXN
+https://cdn1.sba.cdn.moderntv.eu:7908/sba/stream/AXN/40-hls/live-media.m3u8
+#EXTINF:-1 group-title=".",Cinemax 2
+https://streamer1.nexgen.bz/CINEMAX/tracks-v1a2/mono.m3u8
+#EXTINF:-1 group-title=".",Cinecanal
+https://streamer1.nexgen.bz/CINECANAL/tracks-v1a2/mono.m3u8
+#EXTINF:-1 group-title=".",HBO PLUS
+https://streamer1.nexgen.bz/HBO_PLUS/tracks-v1a2/mono.m3u8
+#EXTINF:-1 group-title=".",HBO FAMILY 
+https://streamer1.nexgen.bz/HBO_FAMILY/tracks-v1a2/mono.m3u8
+#EXTINF:-1 group-title=".",Televisa novelas
+https://televisa-televisa-1-it.samsung.wurl.tv/playlist.m3u8
 #EXTINF:-1 group-title=".",A&e
 https://gtechtecnologia.com/telelatino/play/99.m3u8
 #EXTINF:-1 group-title=".",Discovery
