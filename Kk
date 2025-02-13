@@ -2,4 +2,4 @@
 #EXTINF:-1 group-title=".",.
 http://tv.proyectox.vip:8080/MANUELTV23/The6vcHE5U/94805
 #EXTINF:-1 group-title=".",.
-http://tv.proyectox.vip:8080/MANUELTV23/The6vcHE5U/9680
+http://usuario:contraseña@tv.proyectox.vip:8080/MANUELTV23/The6vcHE5U/94805
