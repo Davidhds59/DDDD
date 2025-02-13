@@ -1,5 +1,6 @@
 #EXTM3U
-
+#EXTINF:-1 group-title=".",universal Tv
+https://gtechtecnologia.com/telelatino/play/79.m3u8
 #EXTINF:-1 group-title=".",Cinema
 http://148.113.190.252:8000/play/a015/index.m3u8
 #EXTINF:-1 group-title=".",Popcorn
@@ -82,3 +83,39 @@ https://gtechtecnologia.com/telelatino/play/41.m3u8
 https://gtechtecnologia.com/telelatino/play/40.m3u8
 #EXTINF:-1 group-title=".",Space
 https://gtechtecnologia.com/telelatino/play/39.m3u8
+#EXTINF:-1 group-title=".",Sony novelas
+https://a89829b8dca2471ab52ea9a57bc28a35.mediatailor.us-east-1.amazonaws.com/v1/master/0fb304b2320b25f067414d481a779b77db81760d/CanelaTV_SonyCanalNovelas/playlist.m3u8
+#EXTINF:-1 group-title=".",Canela Clasicos
+https://stream.ads.ottera.tv/playlist.m3u8?network_id=652
+#EXTINF:-1 group-title=".",Canela Hits
+https://stream.ads.ottera.tv/playlist.m3u8?network_id=1058
+#EXTINF:-1 group-title=".",Canela Kids
+https://stream.ads.ottera.tv/playlist.m3u8?network_id=654
+#EXTINF:-1 group-title=".",Canela Music
+https://stream.ads.ottera.tv/playlist.m3u8?network_id=2548
+#EXTINF:-1 group-title=".",Canela Novelas
+https://stream.ads.ottera.tv/playlist.m3u8?network_id=1152
+#EXTINF:-1 group-title=".",Canela Tv
+https://stream.ads.ottera.tv/playlist.m3u8?network_id=119
+#EXTINF:-1 group-title=".",Vevo 2K
+https://d2yhuqxy1ky6ij.cloudfront.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-bel4aqksrgol2-ssai-prd/playlist.m3u8
+#EXTINF:-1 group-title=".",Vevo Pop Latino 
+https://d3t95pdz2h4c90.cloudfront.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-3yjwupt2bfu30/playlist.m3u8
+#EXTINF:-1 group-title=".",Vevo latino
+https://d1jg19cd16tz4s.cloudfront.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-nx7h5jeuhw79b-ssai-prd/playlist.m3u8
+#EXTINF:-1 group-title=".",Telemundo Romance
+https://d4whmvwm0rdvi.cloudfront.net/10007/99991749/hls/master.m3u8?ads.xumo_channelId=99991749
+#EXTINF:-1 group-title=".",Runtime Español 
+https://stream.ads.ottera.tv/playlist.m3u8?network_id=2649
+#EXTINF:-1 group-title=".",Runtime Películas Y series
+https://stream.ads.ottera.tv/playlist.m3u8?network_id=2152
+#EXTINF:-1 group-title=".",Runtime Familia 
+https://stream.ads.ottera.tv/playlist.m3u8?network_id=3528
+#EXTINF:-1 group-title=".",Runtime Terror
+https://stream.ads.ottera.tv/playlist.m3u8?network_id=3529
+#EXTINF:-1 group-title=".",Runtime Crimen
+https://stream.ads.ottera.tv/playlist.m3u8?network_id=3533
+#EXTINF:-1 group-title=".",Runtime Accion
+https://stream.ads.ottera.tv/playlist.m3u8?network_id=2550
+#EXTINF:-1 group-title=".",Runtime Comedia
+https://stream.ads.ottera.tv/playlist.m3u8?network_id=2551
