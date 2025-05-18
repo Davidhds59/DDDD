@@ -1,3 +1,37 @@
 #EXTM3U
-#EXTINF:-1 group-title=".",L
-https://hugh.cdn.rumble.cloud/video/fww1/49/s8/2/P/n/5/K/Pn5Ky.aaa.mp4
+
+#PLAYLISTV: pltv-logo="https://playeriptv.com/assets/favicons/apple-icon-120x120.png" pltv-name="60FPS" pltv-description="Reproductor Simple IPTV - PlayList Exportada por la aplicación Reproductor Simple IPTV - Descarga en PlayStore!" pltv-cover="https://playeriptv.com/assets/fundo-mini.png" pltv-author="Reproductor Simple IPTV" pltv-site="https://playeriptv.com/app"
+
+#EXTINF:-1 tvg-logo="https://playeriptv.com/assets/favicons/apple-icon-120x120.png" group-title="60FPS", PlayList Exportada por la aplicación Reproductor Simple IPTV - Descarga en PlayStore!
+https://playeriptv.com/app
+
+#EXTINF:-1 tvg-logo="https://i.ibb.co/Rhkb9dF/Gpch6-RKgy-Smjur6-ZPs4-Lj6q1-L9u.jpg" group-title="Sin categoría", Inteligencia Artificial
+https://ia601206.us.archive.org/32/items/int-3l-1g-3nc-14-art-1f-1c1-4l-2001-60fps-dual-9-78-gb/Int3l1g3nc1%E2%81%B4%20Art1f1c%C2%B94l%20%282001%29%2060fps%20DUAL%209%2C78%20GB.mkv
+
+#EXTINF:-1 tvg-logo="https://i.ibb.co/ySxzpb3/Nzyshsgt.jpg" group-title="Sin categoría", 13 Fantasmas
+https://archive.org/download/13-ffant-4-ssm-os-60fps-7.59-gb/13Ffant4SsmOs%2060fps%207.59%20GB.mkv
+
+#EXTINF:-1 tvg-logo="https://i.ibb.co/5nwK159/Sm4-E66p-Ph-JTP8f-Ad-ZKOMRDz4-BSR.jpg" group-title="Sin categoría", El cantante
+https://ia601608.us.archive.org/29/items/el-c-4-ntt-t-4-nte-esla-hd-1080-p-60-fps/EL%20C4NTtT4NTE%20-%20ESLA%20HD%281080P_60FPS%29.mp4
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Movies", Armaggedon 60FPS
+https://archive.org/download/carros_20211013/4rm4g3dd0n%2060.mkv
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Movies", El Demoledor 60FPS
+https://archive.org/download/carros_20211013/3l%20D3m0l3d0r.mkv
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Movies", El Quinto elemento 60FPS
+https://archive.org/download/carros_20211013/3l%205%203l3m3nt0.mkv
+
+#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Movies", El Vengador del Futuro 60FPS
+https://archive.org/download/carros_20211013/V3ng4d0r%20Fu7ur0.mkv
+
+#EXTINF:-1 tvg-logo="https://i.ibb.co/Rhkb9dF/Gpch6-RKgy-Smjur6-ZPs4-Lj6q1-L9u.jpg" group-title="Sin categoría", Inteligencia Artificial
+https://ia601206.us.archive.org/32/items/int-3l-1g-3nc-14-art-1f-1c1-4l-2001-60fps-dual-9-78-gb/Int3l1g3nc1%E2%81%B4%20Art1f1c%C2%B94l%20%282001%29%2060fps%20DUAL%209%2C78%20GB.mkv
+
+#EXTINF:-1 tvg-logo="https://i.ibb.co/ySxzpb3/Nzyshsgt.jpg" group-title="Sin categoría", 13 Fantasmas
+https://archive.org/download/13-ffant-4-ssm-os-60fps-7.59-gb/13Ffant4SsmOs%2060fps%207.59%20GB.mkv
+
+#EXTINF:-1 tvg-logo="https://i.ibb.co/5nwK159/Sm4-E66p-Ph-JTP8f-Ad-ZKOMRDz4-BSR.jpg" group-title="Sin categoría", El cantante
+https://ia601608.us.archive.org/29/items/el-c-4-ntt-t-4-nte-esla-hd-1080-p-60-fps/EL%20C4NTtT4NTE%20-%20ESLA%20HD%281080P_60FPS%29.mp4
+
