@@ -1,37 +1,1437 @@
-#EXTM3U
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediaStream</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #1a1e2e;
+            --secondary-color: #252b3d;
+            --accent-color: #3d4665;
+            --text-color: #e9ecef;
+            --highlight-color: #6c5ce7;
+            --sidebar-bg: rgba(15, 15, 26, 0.98);
+            --sidebar-border: rgba(255,255,255,0.15);
+            --nav-link-bg: rgba(255,255,255,0.05);
+            --nav-link-active: linear-gradient(90deg, rgba(99, 102, 241, 0.2), transparent);
+        }
 
-#PLAYLISTV: pltv-logo="https://playeriptv.com/assets/favicons/apple-icon-120x120.png" pltv-name="60FPS" pltv-description="Reproductor Simple IPTV - PlayList Exportada por la aplicación Reproductor Simple IPTV - Descarga en PlayStore!" pltv-cover="https://playeriptv.com/assets/fundo-mini.png" pltv-author="Reproductor Simple IPTV" pltv-site="https://playeriptv.com/app"
+        body {
+            background-color: #000000;
+            color: var(--text-color);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            
+        }
+        
+        
+                        
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
 
-#EXTINF:-1 tvg-logo="https://playeriptv.com/assets/favicons/apple-icon-120x120.png" group-title="60FPS", PlayList Exportada por la aplicación Reproductor Simple IPTV - Descarga en PlayStore!
-https://playeriptv.com/app
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.5);
+        }
 
-#EXTINF:-1 tvg-logo="https://i.ibb.co/Rhkb9dF/Gpch6-RKgy-Smjur6-ZPs4-Lj6q1-L9u.jpg" group-title="Sin categoría", Inteligencia Artificial
-https://ia601206.us.archive.org/32/items/int-3l-1g-3nc-14-art-1f-1c1-4l-2001-60fps-dual-9-78-gb/Int3l1g3nc1%E2%81%B4%20Art1f1c%C2%B94l%20%282001%29%2060fps%20DUAL%209%2C78%20GB.mkv
+        ::-webkit-scrollbar-thumb {
+            background: red;
+            border-radius: 4px;
+        }
 
-#EXTINF:-1 tvg-logo="https://i.ibb.co/ySxzpb3/Nzyshsgt.jpg" group-title="Sin categoría", 13 Fantasmas
-https://archive.org/download/13-ffant-4-ssm-os-60fps-7.59-gb/13Ffant4SsmOs%2060fps%207.59%20GB.mkv
+        ::-webkit-scrollbar-thumb:hover {
+            background: #5a3f7a;
+        }
 
-#EXTINF:-1 tvg-logo="https://i.ibb.co/5nwK159/Sm4-E66p-Ph-JTP8f-Ad-ZKOMRDz4-BSR.jpg" group-title="Sin categoría", El cantante
-https://ia601608.us.archive.org/29/items/el-c-4-ntt-t-4-nte-esla-hd-1080-p-60-fps/EL%20C4NTtT4NTE%20-%20ESLA%20HD%281080P_60FPS%29.mp4
+        /* Typography */
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 700;
+            line-height: 1.2;
+        }
 
-#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Movies", Armaggedon 60FPS
-https://archive.org/download/carros_20211013/4rm4g3dd0n%2060.mkv
+        #sidebar {
+  width: 250px;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5); /* Fondo blanco semitransparente */
+  backdrop-filter: blur(10px); /* Difumina lo que hay detrás */
+  -webkit-backdrop-filter: blur(1px); /* Compatibilidad para Safari */
+  border-right: 1px solid rgba(255, 255, 255, 0.3);
 
-#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Movies", El Demoledor 60FPS
-https://archive.org/download/carros_20211013/3l%20D3m0l3d0r.mkv
+            width: 250px;
+            position: fixed;
+            height: 100%;
+            left: -250px;
+            top: 0;
+            transition: 0.3s;
+            z-index: 1000;
+            padding-top: 60px;
+            box-shadow: 4px 0 15px rgba(0,0,0,0.9);
+        }
 
-#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Movies", El Quinto elemento 60FPS
-https://archive.org/download/carros_20211013/3l%205%203l3m3nt0.mkv
+        #sidebar.show {
+            left: 0;
+        }
 
-#EXTINF:-1 tvg-logo="http://127.0.0.1/" group-title="Movies", El Vengador del Futuro 60FPS
-https://archive.org/download/carros_20211013/V3ng4d0r%20Fu7ur0.mkv
+         .nav-link {
+            color: var(--text-color);
+            padding: 12px 20px;
+            transition: all 0.3s ease;
+            border-radius: 8px;
+            margin: 6px 15px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            backdrop-filter: blur(5px);
+            background: var(--nav-link-bg);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            border-left: 3px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
 
-#EXTINF:-1 tvg-logo="https://i.ibb.co/Rhkb9dF/Gpch6-RKgy-Smjur6-ZPs4-Lj6q1-L9u.jpg" group-title="Sin categoría", Inteligencia Artificial
-https://ia601206.us.archive.org/32/items/int-3l-1g-3nc-14-art-1f-1c1-4l-2001-60fps-dual-9-78-gb/Int3l1g3nc1%E2%81%B4%20Art1f1c%C2%B94l%20%282001%29%2060fps%20DUAL%209%2C78%20GB.mkv
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: all 0.6s ease;
+        }
 
-#EXTINF:-1 tvg-logo="https://i.ibb.co/ySxzpb3/Nzyshsgt.jpg" group-title="Sin categoría", 13 Fantasmas
-https://archive.org/download/13-ffant-4-ssm-os-60fps-7.59-gb/13Ffant4SsmOs%2060fps%207.59%20GB.mkv
+        .nav-link:hover::before, 
+        .nav-link.active::before {
+            left: 100%;
+        }
 
-#EXTINF:-1 tvg-logo="https://i.ibb.co/5nwK159/Sm4-E66p-Ph-JTP8f-Ad-ZKOMRDz4-BSR.jpg" group-title="Sin categoría", El cantante
-https://ia601608.us.archive.org/29/items/el-c-4-ntt-t-4-nte-esla-hd-1080-p-60-fps/EL%20C4NTtT4NTE%20-%20ESLA%20HD%281080P_60FPS%29.mp4
+        .nav-link:hover, 
+        .nav-link.active {
+            background: var(--nav-link-active);
+            color: var(--primary);
+            transform: translateX(5px);
+            border-left: 3px solid var(--primary);
+        }
 
+        .nav-link i {
+            font-size: 1.1rem;
+            width: 24px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .nav-link .badge {
+            margin-left: auto;
+            background: var(--highlight-color);
+            font-size: 0.7rem;
+        }
+       #mainContent {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-left: 0;
+            padding: 25px;
+            min-height: 100vh;
+            flex: 1;
+        }
+
+        #mainContent.sidebar-open {
+            margin-left: 280px;
+  
+        
+        }
+      
+                        
+        .featured-carousel {
+            margin-bottom: 1rem;
+            position: relative;
+            border-radius: 35px;
+            overflow: hidden;
+        }
+
+        .carousel-item {
+            height: 100vh;
+            min-height: 250px;
+            background-position: center;
+            background-size: 100%;
+            background-repeat: no-repeat;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .carousel-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.9));
+            padding: 40px 20px 20px;
+        }
+
+        .categoria {
+            margin-bottom: 1rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: 0.5s;
+        }
+
+        .categoria.animate-fade-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .categoria-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding: 0 10px;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .categoria-container {
+            display: flex;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            padding: 10px 0;
+            gap: 15px;
+            scrollbar-width: none;
+            cursor: grab;
+        }
+
+        .categoria-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .item-card {
+            flex: 0 0 auto;
+            width: 200px;
+            transition: transform 0.3s;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .item-card:hover {
+            transform: scale(1.05);
+        }
+
+        .item-card img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .item-card.latest-episode {
+            width: 300px;
+        }
+
+        .item-card.latest-episode img {
+            height: 169px;
+        }
+
+        #favorites-container{
+            display: flex;
+            flex-wrap: wrap;
+
+            .item-card {
+                flex: 0 0 auto;
+                width: 200px;
+                transition: transform 0.3s;
+                position: relative;
+                cursor: pointer;
+                margin: 5px;
+            }
+        }
+
+        .favorite-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.6);
+            border: none;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            transition: 0.3s;
+            z-index: 2;
+        }
+
+        .favorite-btn:hover, .favorite-btn.active {
+            background: var(--highlight-color);
+            transform: scale(1.1);
+        }
+
+        .calidad-badge {
+            position: absolute;
+            bottom: 60px;
+            left: 10px;
+            background: var(--highlight-color);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            color: white;
+        }
+
+        .search-container {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .search-input {
+            background-color: var(--secondary-color);
+            border: none;
+            border-radius: 25px;
+            padding: 12px 20px;
+            padding-left: 45px;
+            width: 100%;
+            color: var(--text-color);
+        }
+
+        .search-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px var(--highlight-color);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-color);
+        }
+
+        .modal-body .grid-view {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        @media (max-width: 768px) {
+            #mainContent.sidebar-open {
+                margin-left: 0;
+            }
+
+            .carousel-item {
+                height: 30vh;
+            }
+
+            .item-card {
+                width: 110px;
+            }
+
+            .item-card img {
+                height: 180px;
+            }
+
+            .item-card.latest-episode {
+                width: 250px;
+            }
+
+            .item-card.latest-episode img {
+                height: 141px;
+            }
+
+          .modal-body .grid-view {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+                gap: 20px;
+            }
+        }
+
+        h5{
+            font-size: 0.8rem;
+        }
+
+        .text-muted{
+            color: #fff !important;
+        }
+        .calidad-badge{
+            text-transform: uppercase;
+        }
+
+.visits-badge {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    background: rgba(0,0,0,0.7);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.8em;
+}
+
+/* Estilo espec�fico SOLO para el modal (2 columnas siempre) */
+.modal .modal-body .grid-view {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(150px, 1fr));
+    gap: 25px;
+}
+
+/* Estilos para las tarjetas DENTRO del modal */
+..modal .item-card {
+    width: 100%; /* Ocupa todo el ancho disponible del grid */
+    max-width: 100%; /* Previene que se salga del contenedor */
+    background: #000000;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    border: 1px solid rgba(255,255,255,0.05);
+    margin: 0 auto; /* Centrado horizontal */
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Asegura misma altura para ambas columnas */
+}
+
+/* Asegurar que la imagen ocupe el espacio correcto */
+.modal .item-card img 2
+    width: 100%;
+    height: 210px;
+    object-fit: cover;
+    object-position: center; /* Centra la imagen */
+    display: block; /* Elimina espacio fantasma debajo */
+}
+
+/* Contenido del card siempre centrado */
+.modal .item-card h5 {
+    padding: 15px;
+    margin: 0;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-grow: 1; /* Empuja el contenido hacia arriba */
+}
+
+/* Ajustes para el grid contenedor */
+.modal .modal-body .grid-view {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr)); /* Columnas iguales */
+    gap: 20px;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    align-items: stretch; /* Cards iguales en altura */
+}
+
+    
+    .modal .item-card img {
+        height: 180px;
+    }
+}
+
+@media (max-width: 276px) {
+    .modal .modal-body .grid-view {
+        grid-template-columns: 2fr; /* 1 columna en m�viles muy peque�os */
+        gap: 12px;
+    }
+    
+    .modal .item-card img {
+        height: 100px; /* M�s alto para ocupar la columna �nica */
+    }
+}
+
+/* Ajustes del contenedor del modal */
+.modal .modal-dialog {
+    max-width: 800px;
+}
+
+.modal .modal-content {
+    background: rgba(0, 0, 0, 0.5); /* Fondo blanco semitransparente */
+  backdrop-filter: blur(10px); /* Difumina lo que hay detrás */
+    border-radius: 16px;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+
+      body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url(' ') no-repeat center center/cover;
+  filter: brightness(20%) blur(2px);
+  z-index: -2;
+}
+
+
+#featuredCarousel {
+    width: 100vw;
+    left: 50%;
+    right: 50%;
+    transform: translateX(-50%);
+    border-radius: 1px;
+}
+
+
+
+
+
+    </style>
+</head>
+<body>  
+    
+    
+                    
+                    
+    
+    <button id="menuToggle" class="btn btn-dark position-fixed top-0 start-0 m-3 z-3">
+        <i class="bi bi-card-list"></i>
+    </button>
+ 
+    <nav id="sidebar" class="sidebar">
+        
+       
+            
+        <div class="sidebar-header">
+            <button id="closeMenu" class="btn btn-dark">
+                <i class="bi bi-arrow-down-right-circle-fill"></i>
+            </button>
+        </div>
+        <div class="d-flex flex-column h-100">
+            
+            <ul class="nav flex-column">
+                
+                <li class="nav-item">
+                    <a class="nav-link" href="go:buscador">
+                        <i class="bi bi-search me-2"></i>Buscar...
+                    </a>
+                </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link active" id="mostrar-peliculas" href="#">
+                        <i class="bi bi-camera-reels-fill"></i> Películas
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="mostrar-series" href="#">
+                        <i class="bi bi-tv" ></i> Series 
+                    </a>
+                </li>
+                
+                <li class="nav-item">
+                <a class="nav-link" href="go:tva"><i class="bi bi-broadcast"></i> TV en Vivo</a>
+            </li>
+            <li class="nav-item">
+                
+            </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="mostrar-favoritos" href="#">
+                        <i class="bi bi-bookmark-heart"></i> Favoritos
+                    </a>
+                </li>
+                
+                 <li class="nav-item">
+                    <a class="nav-link" href="go:dramas1">
+                        <i class="bi bi-star-fill"></i>K-DRAMAS VIP
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="go:seriesp">
+                        <i class="bi bi-star-fill"></i>SERIES VIP
+                    </a>
+                </li>
+                
+                
+                <li class="nav-item">
+                    <a class="nav-link" href="go:dp">
+                        <i class="bi bi-cloud-arrow-down-fill"></i> COMO DESCARGAR PELIS
+                    </a>
+                </li>
+                
+                
+                <li class="nav-item">
+                    <a class="nav-link" id="mostrar-ajustes" href="#">
+                        
+                                         
+                        
+                        <i class="bi bi-gear"></i> Ajustes
+                    </a>
+                </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link" href="https://t.me/peliculas2024cine">
+                        <i class="bi bi-telegram"></i>Reportes
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div id="mainContent">
+        <div id="featuredCarousel" class="carousel slide featured-carousel" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <!-- Carousel items will be dynamically added -->
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#featuredCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Anterior</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#featuredCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Siguiente</span>
+            </button>
+        </div>
+
+        <section id="peliculas" class="seccion"></section>
+        <section id="series" class="seccion d-none"></section>
+        <section id="favoritos" class="seccion d-none">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <button class="clear-favorites btn btn-danger">Limpiar favoritos</button>
+            </div>
+            <div id="favorites-container" class="grid-view"></div>
+        </section>
+        <section id="ajustes" class="seccion d-none">
+            <h2 class="section-title">Ajustes</h2>
+            <div class="list-group bg-dark">
+                <a href="https://www.tiktok.com/@davidsanchez_87?_t=ZS-8w6oY92ppQK&_r=1" class="list-group-item list-group-item-action bg-dark text-light d-flex align-items-center">
+                    <i class="bi bi-tiktok me-2"></i>Tik tok
+                </a>
+                <a href="https://cineramirezapp.blogspot.com/" class="list-group-item list-group-item-action bg-dark text-light d-flex align-items-center">
+                    <i class="bi bi-share me-2"></i>Compartir
+                </a>
+                
+                <a href="#" class="list-group-item list-group-item-action bg-dark text-light d-flex align-items-center">
+                    <i class="bi bi-star me-2"></i>Califícanos
+                </a>
+                <a href="#" class="list-group-item list-group-item-action bg-dark text-light d-flex align-items-center">
+                    <i class="bi bi-whatsapp me-2"></i>Canal de Whatsapp
+                </a>
+        </section>
+    </div>
+
+   <!-- Modals -->
+    <div class="modal fade" id="verMasModal" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header border-bottom-0">
+                    <h5 class="modal-title"></h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="grid-view"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+        class CacheManager {
+            constructor(config = {}) {
+                this.storageKey = config.storageKey || 'epicstream_cache';
+                this.cacheDuration = config.cacheDuration || 30 * 24 * 60 * 60 * 1000; // 30 days
+                this.apiBaseUrl = config.apiBaseUrl || 'https://epicstream.xyz.mediapanel.site/api_search.php';
+                this.apiKey = config.apiKey || 'cfdfa64a3655b726f80396e82afa925827e6ddceef28350b70bc02179e690f44';
+                this.cacheLimit = config.cacheLimit || 500;
+                this.version = config.version || '1.0.0';
+                this.onError = config.onError || ((err) => console.error('CacheManager Error:', err));
+                this.isUpdating = false;
+            }
+        
+            initialize() {
+                this.loadCache();
+            }
+        
+            loadCache() {
+                try {
+                    const cached = localStorage.getItem(this.storageKey);
+                    if (cached) {
+                        const parsed = JSON.parse(cached);
+                        if (parsed.version !== this.version) {
+                            console.warn('Cache version mismatch, clearing old data');
+                            this.clearCache();
+                            return { data: {}, timestamp: Date.now() };
+                        }
+                        return parsed;
+                    }
+                } catch (error) {
+                    this.onError(error);
+                    this.clearCache();
+                }
+                return { data: {}, timestamp: Date.now() };
+            }
+        
+            saveCache(data, timestamp = Date.now()) {
+                try {
+                    const cacheData = {
+                        version: this.version,
+                        timestamp: timestamp,
+                        data,
+                    };
+                    localStorage.setItem(this.storageKey, JSON.stringify(cacheData));
+                } catch (error) {
+                    this.onError(error);
+                }
+            }
+        
+            clearCache() {
+                localStorage.removeItem(this.storageKey);
+            }
+        
+            reduceItemData(item) {
+                return {
+                    id_tmdb: item.id_tmdb,
+                    titulo: item.titulo,
+                    poster_path: item.poster_path, // Updated to match API field
+                    total_visitas: item.total_visitas,
+                    categorias: item.categorias,
+                    fecha_subida: item.fecha_subida,
+                };
+            }
+        
+            async fetchFromApi(type) {
+                try {
+                    const response = await fetch(`${this.apiBaseUrl}?api_key=${this.apiKey}&type=${type}`, {
+                        headers: { 'Cache-Control': 'no-cache' },
+                    });
+                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                    const data = await response.json();
+                    return data.data || []; // API returns 'data' array
+                } catch (error) {
+                    this.onError(error);
+                    return [];
+                }
+            }
+        
+            async getData(type) {
+                const cache = this.loadCache();
+                const now = Date.now();
+                const cachedData = cache.data[type] || [];
+                const isExpired = now - cache.timestamp > this.cacheDuration;
+        
+                if (cachedData.length > 0 && !isExpired) {
+                    return cachedData;
+                }
+                return cachedData; // Return cached data even if expired
+            }
+        
+            async manualUpdate() {
+                if (this.isUpdating) return false;
+                this.isUpdating = true;
+        
+                try {
+                    const types = ['peliculas', 'series'];
+                    const cache = this.loadCache();
+                    const newData = {};
+                    for (const type of types) {
+                        const freshData = await this.fetchFromApi(type);
+                        newData[type] = freshData.map((item) => this.reduceItemData(item));
+                    }
+                    this.saveCache(newData, Date.now());
+                    return newData;
+                } catch (error) {
+                    this.onError(error);
+                    return false;
+                } finally {
+                    this.isUpdating = false;
+                }
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const cacheManager = new CacheManager();
+            cacheManager.initialize();
+        
+            const verMasModal = new bootstrap.Modal(document.getElementById('verMasModal'));
+            const menuToggle = document.getElementById('menuToggle');
+            const closeMenu = document.getElementById('closeMenu');
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+        
+            menuToggle.addEventListener('click', () => {
+                sidebar.classList.add('show');
+                mainContent.classList.add('sidebar-open');
+            });
+        
+            closeMenu.addEventListener('click', () => {
+                sidebar.classList.remove('show');
+                mainContent.classList.remove('sidebar-open');
+            });
+        
+            document.addEventListener('click', (e) => {
+                if (
+                    !sidebar.contains(e.target) &&
+                    !menuToggle.contains(e.target) &&
+                    sidebar.classList.contains('show')
+                ) {
+                    sidebar.classList.remove('show');
+                    mainContent.classList.remove('sidebar-open');
+                }
+            });
+        
+            function toggleFavorite(item) {
+                const index = favorites.findIndex((fav) => fav.id_tmdb === item.id_tmdb && fav.tipo === item.tipo);
+                if (index === -1) {
+                    favorites.push(item);
+                } else {
+                    favorites.splice(index, 1);
+                }
+                localStorage.setItem('favorites', JSON.stringify(favorites));
+                actualizarFavoritos();
+                return index === -1;
+            }
+        
+            function isFavorite(id_tmdb, tipo) {
+                return favorites.some((fav) => fav.id_tmdb === id_tmdb && fav.tipo === tipo);
+            }
+        
+            function actualizarFavoritos() {
+                const container = document.getElementById('favorites-container');
+                container.innerHTML = favorites
+                    .map(
+                        (item) => `
+                        <div class="item-card" data-tmdb-id="${item.id_tmdb}" data-tipo="${item.tipo}">
+                            <div class="position-relative">
+                                <button class="favorite-btn active">
+                                    <i class="bi bi-bookmark-heart"></i>
+                                </button>
+                                <img src="${item.poster_path}" alt="${item.titulo}" class="img-fluid lazy-load">
+                                <span class="visits-badge">${item.total_visitas || '0'} visitas</span>
+                            </div>
+                            <h5 class="text-center">${item.titulo}</h5>
+                        </div>
+                    `
+                    )
+                    .join('');
+        
+                container.querySelectorAll('.favorite-btn').forEach((btn) => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const card = btn.closest('.item-card');
+                        const id_tmdb = card.dataset.tmdbId;
+                        const tipo = card.dataset.tipo;
+                        const item = favorites.find((fav) => fav.id_tmdb === id_tmdb && fav.tipo === tipo);
+                        toggleFavorite(item);
+                    });
+                });
+        
+                container.querySelectorAll('.item-card').forEach((card) => {
+                    card.addEventListener('click', () => {
+                        const tmdbId = card.getAttribute('data-tmdb-id');
+                        const tipo = card.getAttribute('data-tipo');
+                        localStorage.setItem('tmdbId', tmdbId);
+                        window.location.href = tipo === 'pelicula' ? 'go:peliculas' : 'go:series';
+                    });
+                });
+        
+                initializeLazyLoading();
+            }
+        
+            document.querySelector('.clear-favorites').addEventListener('click', () => {
+                if (confirm('¿Estás seguro de que quieres borrar todos los favoritos?')) {
+                    favorites = [];
+                    localStorage.setItem('favorites', JSON.stringify(favorites));
+                    actualizarFavoritos();
+                }
+            });
+        
+            const lazyLoadConfig = {
+                rootMargin: '200px 0px',
+                threshold: 0.1,
+            };
+        
+            function initializeLazyLoading() {
+                const imageObserver = new IntersectionObserver(
+                    (entries, observer) => {
+                        entries.forEach((entry) => {
+                            if (entry.isIntersecting) {
+                                const img = entry.target;
+                                img.classList.add('loading-placeholder');
+                                const tempImg = new Image();
+                                tempImg.src = img.dataset.src || img.src;
+        
+                                tempImg.onload = () => {
+                                    img.src = tempImg.src;
+                                    img.removeAttribute('data-src');
+                                    img.classList.remove('loading-placeholder');
+                                    img.classList.add('loaded');
+                                };
+        
+                                tempImg.onerror = () => {
+                                    img.src = '/api/placeholder/200/300';
+                                    img.classList.remove('loading-placeholder');
+                                    img.classList.add('loaded');
+                                };
+        
+                                observer.unobserve(img);
+                            }
+                        });
+                    },
+                    lazyLoadConfig
+                );
+        
+                document.querySelectorAll('img.lazy-load').forEach((img) => {
+                    if (img.dataset.src || !img.src.startsWith('data:')) {
+                        imageObserver.observe(img);
+                    }
+                });
+            }
+        
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '50px',
+            };
+        
+            const contentObserver = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate-fade-in');
+                        entry.target.style.opacity = '1';
+                        contentObserver.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+        
+            function mostrarSeccion(seccion) {
+                document.querySelectorAll('.seccion').forEach((sec) => {
+                    sec.classList.add('d-none');
+                });
+                document.getElementById(seccion).classList.remove('d-none');
+        
+                document.querySelectorAll('.nav-link').forEach((link) => {
+                    link.classList.remove('active');
+                });
+                document.getElementById(`mostrar-${seccion}`).classList.add('active');
+        
+                if (seccion === 'favoritos') {
+                    actualizarFavoritos();
+                }
+        
+                sidebar.classList.remove('show');
+                mainContent.classList.remove('sidebar-open');
+            }
+        
+            ['peliculas', 'series', 'ajustes', 'favoritos'].forEach((seccion) => {
+                document.getElementById(`mostrar-${seccion}`).addEventListener('click', () =>
+                    mostrarSeccion(seccion)
+                );
+            });
+        
+            function crearTarjetaItem(item, tipo) {
+                const isFav = isFavorite(item.id_tmdb, tipo);
+                const visitas = item.total_visitas || '0';
+        
+                return `
+                    <div class="item-card" data-tmdb-id="${item.id_tmdb}" data-tipo="${tipo}">
+                        <div class="position-relative">
+                            <button class="favorite-btn ${isFav ? 'active' : ''}">
+                                <i class="bi bi-bookmark-heart"></i>
+                            </button>
+                            <img data-src="${item.poster_path}" alt="${item.titulo}" class="img-fluid lazy-load">
+                            <span class="visits-badge">${visitas} vistas</span>
+                        </div>
+                        <h5 class="text-center">${item.titulo}</h5>
+                    </div>
+                `;
+            }
+        
+            function determinarTipoContenido(item) {
+                return item.categorias && item.categorias.toLowerCase().includes('serie') ? 'serie' : 'pelicula';
+            }
+        
+            function actualizarCarrusel(peliculas, series) {
+                const carouselInner = document.querySelector('.carousel-inner');
+                const ultimasPeliculas = peliculas.slice(-5);
+                const ultimasSeries = series.slice(-5);
+                const carouselItems = [...ultimasPeliculas, ...ultimasSeries]
+                    .sort(() => Math.random() - 0.5)
+                    .slice(0, 10);
+        
+                carouselInner.innerHTML = carouselItems
+                    .map(
+                        (item, index) => {
+                            const tipo = determinarTipoContenido(item);
+                            const visitas = item.total_visitas || '0';
+                            return `
+                            <div class="carousel-item ${index === 0 ? 'active' : ''}" 
+                                 data-tmdb-id="${item.id_tmdb}" 
+                                 data-tipo="${tipo}"
+                                 style="background-image: url('${item.poster_path}')">
+                                <div class="carousel-overlay">
+                                    <h2>${item.titulo}</h2>
+                                    <p>${item.categorias ? item.categorias.replace(/,/g, ' • ') : ''}</p>
+                                    ${tipo === 'serie' ? '<span class="badge bg-primary">Serie</span>' : '<span class="badge bg-secondary">Película</span>'}
+                                    <span class="badge bg-info">${visitas} vistas</span>
+                                </div>
+                            </div>
+                        `;
+                        }
+                    )
+                    .join('');
+        
+                carouselInner.querySelectorAll('.carousel-item').forEach((item) => {
+                    item.addEventListener('click', () => {
+                        const tmdbId = item.getAttribute('data-tmdb-id');
+                        const tipo = item.getAttribute('data-tipo');
+                        localStorage.setItem('tmdbId', tmdbId);
+                        window.location.href = tipo === 'pelicula' ? 'go:peliculas' : 'go:series';
+                    });
+                });
+        
+                const carousel = document.querySelector('.carousel');
+                if (carousel && !bootstrap.Carousel.getInstance(carousel)) {
+                    new bootstrap.Carousel(carousel, {
+                        interval: 5000,
+                        ride: 'carousel',
+                        wrap: true,
+                    });
+                }
+            }
+        
+            function mostrarContenidoEnModal(categoria, items, tipo) {
+                const modalTitle = document.querySelector('.modal-title');
+                const gridView = document.querySelector('.modal-body .grid-view');
+        
+                modalTitle.textContent = categoria;
+        
+                if (items && items.length > 0) {
+                    gridView.innerHTML = items.reverse().map((item) => crearTarjetaItem(item, tipo)).join('');
+                } else {
+                    gridView.innerHTML = '<p>No hay contenido disponible.</p>';
+                }
+        
+                agregarEventListenersAItems(gridView, tipo, items);
+                initializeLazyLoading();
+        
+                verMasModal.show();
+            }
+        
+            function agregarEventListenersAItems(container, tipo, items) {
+                container.querySelectorAll('.item-card').forEach((card) => {
+                    const favBtn = card.querySelector('.favorite-btn');
+        
+                    favBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const tmdbId = card.dataset.tmdbId;
+                        const item = items.find((i) => i.id_tmdb === tmdbId);
+                        if (item) {
+                            const itemToSave = { ...item, tipo };
+                            const isNowFavorite = toggleFavorite(itemToSave);
+                            favBtn.classList.toggle('active', isNowFavorite);
+                        }
+                    });
+        
+                    card.addEventListener('click', () => {
+                        const tmdbId = card.getAttribute('data-tmdb-id');
+                        localStorage.setItem('tmdbId', tmdbId);
+                        window.location.href = tipo === 'pelicula' ? 'go:peliculas' : 'go:series';
+                    });
+                });
+            }
+        
+            function mostrarCategoria(categoria, items, tipo, contenedor) {
+                const categoriaDiv = document.createElement('div');
+                categoriaDiv.classList.add('categoria');
+                categoriaDiv.style.opacity = '0';
+        
+                const itemsLimit = items.slice(-15);
+        
+                categoriaDiv.innerHTML = `
+                    <div class="categoria-header">
+                        <h3 class="section-title">${categoria}</h3>
+                        <button class="btn btn-outline-light btn-sm ver-mas-btn">
+                            Ver más <i class="bi bi-arrow-bar-right"></i>
+                        </button>
+                    </div>
+                    <div class="categoria-container">
+                        ${itemsLimit.reverse().map((item) => crearTarjetaItem(item, tipo)).join('')}
+                    </div>
+                `;
+        
+                contenedor.appendChild(categoriaDiv);
+                contentObserver.observe(categoriaDiv);
+        
+                const verMasBtn = categoriaDiv.querySelector('.ver-mas-btn');
+                verMasBtn.addEventListener('click', () => {
+                    mostrarContenidoEnModal(categoria, items, tipo);
+                });
+        
+                agregarEventListenersAItems(categoriaDiv, tipo, items);
+                initializeLazyLoading();
+            }
+        
+            function mostrarTop10(items, tipo, contenedor, titulo) {
+                const categoriaDiv = document.createElement('div');
+                categoriaDiv.classList.add('categoria', 'top-10');
+                categoriaDiv.style.opacity = '0';
+        
+                const top10 = items
+                    .sort((a, b) => (b.total_visitas || 0) - (a.total_visitas || 0))
+                    .slice(0, 10);
+        
+                categoriaDiv.innerHTML = `
+                    <div class="categoria-header">
+                        <h3 class="section-title">${titulo}</h3>
+                    </div>
+                    <div class="categoria-container top-10-container">
+                        ${top10
+                            .map(
+                                (item, index) => `
+                                <div class="top-10-item-wrapper">
+                                    <div class="top-10-number">${index + 1}</div>
+                                    <div class="item-card top-10-item" data-tmdb-id="${item.id_tmdb}" data-tipo="${tipo}">
+                                        <div class="position-relative">
+                                            <button class="favorite-btn ${isFavorite(item.id_tmdb, tipo) ? 'active' : ''}">
+                                                <i class="bi bi-bookmark-heart"></i>
+                                            </button>
+                                            <img data-src="${item.poster_path}" alt="${item.titulo}" class="img-fluid lazy-load">
+                                            <span class="visits-badge">${item.total_visitas || '0'} vistas</span>
+                                        </div>
+                                        <h5 class="text-center">${item.titulo}</h5>
+                                    </div>
+                                </div>
+                            `
+                            )
+                            .join('')}
+                    </div>
+                `;
+        
+                contenedor.insertBefore(categoriaDiv, contenedor.firstChild);
+                contentObserver.observe(categoriaDiv);
+        
+                const container = categoriaDiv.querySelector('.categoria-container');
+                container.querySelectorAll('.item-card').forEach((card) => {
+                    const favBtn = card.querySelector('.favorite-btn');
+        
+                    favBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const tmdbId = card.dataset.tmdbId;
+                        const item = top10.find((i) => i.id_tmdb === tmdbId);
+                        if (item) {
+                            const itemToSave = { ...item, tipo };
+                            const isNowFavorite = toggleFavorite(itemToSave);
+                            favBtn.classList.toggle('active', isNowFavorite);
+                        }
+                    });
+        
+                    card.addEventListener('click', () => {
+                        const tmdbId = card.getAttribute('data-tmdb-id');
+                        const tipo = card.getAttribute('data-tipo');
+                        localStorage.setItem('tmdbId', tmdbId);
+                        window.location.href = tipo === 'pelicula' ? 'go:peliculas' : 'go:series';
+                    });
+                });
+        
+                initializeLazyLoading();
+            }
+        
+            function agruparPorCategoria(items) {
+                const itemsPorCategoria = {};
+                items.forEach((item) => {
+                    if (item.categorias && typeof item.categorias === 'string') {
+                        const categorias = item.categorias.split(',');
+                        categorias.forEach((categoria) => {
+                            if (!itemsPorCategoria[categoria]) {
+                                itemsPorCategoria[categoria] = [];
+                            }
+                            itemsPorCategoria[categoria].push(item);
+                        });
+                    }
+                });
+                return itemsPorCategoria;
+            }
+        
+            function showLoadingMessage() {
+                const loadingDiv = document.createElement('div');
+                loadingDiv.id = 'loadingOverlay';
+                loadingDiv.innerHTML = `
+                    <div class="loading-content">
+                        <div class="spinner"></div>
+                        <h2>¡Cargando Contenido!</h2>
+                        <p>No encontramos datos en el caché. Estamos descargando todo automáticamente, espera unos segundos...</p>
+                    </div>
+                `;
+                document.body.appendChild(loadingDiv);
+            }
+        
+            function hideLoadingMessage() {
+                const loadingDiv = document.getElementById('loadingOverlay');
+                if (loadingDiv) loadingDiv.remove();
+            }
+        
+            async function inicializarContenido() {
+                mostrarSeccion('peliculas');
+        
+                try {
+                    const cache = cacheManager.loadCache();
+                    const hasData = cache.data && Object.keys(cache.data).length > 0;
+                    let peliculas, series;
+        
+                    if (!hasData) {
+                        showLoadingMessage();
+                        const updatedData = await cacheManager.manualUpdate();
+                        hideLoadingMessage();
+                        peliculas = updatedData.peliculas || [];
+                        series = updatedData.series || [];
+                    } else {
+                        [peliculas, series] = await Promise.all([
+                            cacheManager.getData('peliculas'),
+                            cacheManager.getData('series'),
+                        ]);
+                    }
+        
+                    if (peliculas && series) {
+                        actualizarCarrusel(peliculas, series);
+                    }
+        
+                    if (peliculas) {
+                        const peliculasSection = document.getElementById('peliculas');
+                        peliculasSection.innerHTML = '';
+                        mostrarTop10(peliculas, 'pelicula', peliculasSection, 'Top 10 de Películas');
+                        const peliculasPorCategoria = agruparPorCategoria(peliculas);
+                        Object.entries(peliculasPorCategoria)
+                            .sort(([a], [b]) => (a === 'Estrenos' ? -1 : b === 'Estrenos' ? 1 : 0))
+                            .forEach(([categoria, items]) => {
+                                mostrarCategoria(categoria, items, 'pelicula', peliculasSection);
+                            });
+                    }
+        
+                    if (series) {
+                        const seriesSection = document.getElementById('series');
+                        seriesSection.innerHTML = '';
+                        mostrarTop10(series, 'serie', seriesSection, 'Top 10 de Series');
+                        const seriesPorCategoria = agruparPorCategoria(series);
+                        Object.entries(seriesPorCategoria)
+                            .sort(([a], [b]) => (a === 'Estrenos' ? -1 : b === 'Estrenos' ? 1 : 0))
+                            .forEach(([categoria, items]) => {
+                                mostrarCategoria(categoria, items, 'serie', seriesSection);
+                            });
+                    }
+        
+                    initializeLazyLoading();
+                } catch (error) {
+                    console.error('Error al inicializar contenido:', error);
+                    hideLoadingMessage();
+                }
+            }
+        
+            document.querySelectorAll('.categoria-container').forEach((container) => {
+                let isDown = false;
+                let startX;
+                let scrollLeft;
+        
+                container.addEventListener('mousedown', (e) => {
+                    isDown = true;
+                    startX = e.pageX - container.offsetLeft;
+                    scrollLeft = container.scrollLeft;
+                    container.style.cursor = 'grabbing';
+                });
+        
+                container.addEventListener('mouseleave', () => {
+                    isDown = false;
+                    container.style.cursor = 'grab';
+                });
+        
+                container.addEventListener('mouseup', () => {
+                    isDown = false;
+                    container.style.cursor = 'grab';
+                });
+        
+                container.addEventListener('mousemove', (e) => {
+                    if (!isDown) return;
+                    e.preventDefault();
+                    const x = e.pageX - container.offsetLeft;
+                    const walk = (x - startX) * 2;
+                    container.scrollLeft = scrollLeft - walk;
+                });
+            });
+        
+            const refreshButton = document.createElement('button');
+            refreshButton.id = 'refreshButton';
+            refreshButton.innerHTML = '<i class="bi bi-arrow-repeat"></i>';
+            document.body.appendChild(refreshButton);
+        
+            refreshButton.addEventListener('click', async () => {
+                if (confirm('¿Quieres actualizar el contenido? Esto puede tomar unos segundos.')) {
+                    refreshButton.disabled = true;
+                    const updatedData = await cacheManager.manualUpdate();
+                    if (updatedData) {
+                        document.getElementById('peliculas').innerHTML = '';
+                        document.getElementById('series').innerHTML = '';
+                        await inicializarContenido();
+                    }
+                    refreshButton.disabled = false;
+                }
+            });
+        
+            const style = document.createElement('style');
+            style.textContent = `
+                .top-10-container {
+                    display: flex;
+                    overflow-x: auto;
+                    padding: 1px 0;
+                    height: 230px !important;
+                }
+                .top-10-item-wrapper {
+                    display: flex;
+                    align-items: center;
+                    margin-right: 0px;
+                    flex-shrink: 0;
+                }
+                .top-10-number {
+                    width: 20px;
+                    height: 20px;
+                    background-color: red;
+                    color: white;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 1.2rem;
+                    font-weight: bold;
+                    margin-right: 1px;
+                    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+                }
+                .top-10-item {
+                    width: 110px;
+                    height: 225px;
+                }
+                .top-10-item img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    border-radius: 8px;
+                }
+                .top-10-item h5 {
+                    margin-top: 10px;
+                    font-size: .6rem;
+                    color: white;
+                }
+                .loading-placeholder {
+                    background: #333 !important;
+                    position: relative;
+                    overflow: hidden;
+                }
+                .loading-placeholder::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: -100%;
+                    width: 100%;
+                    height: 100%;
+                    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+                    animation: shimmer 1.5s infinite;
+                }
+                @keyframes shimmer {
+                    0% { left: -100%; }
+                    100% { left: 100%; }
+                }
+                .loaded {
+                    transition: opacity 0.3s ease-in-out;
+                    opacity: 1;
+                }
+                .item-card img, .top-10-item img {
+                    opacity: 0;
+                }
+                .item-card img.loaded, .top-10-item img.loaded {
+                    opacity: 1;
+                }
+                #refreshButton {
+                    position: fixed;
+                    bottom: 20px;
+                    right: 20px;
+                    width: 50px;
+                    height: 50px;
+                    border-radius: 50%;
+                    background-color: #007bff;
+                    color: white;
+                    border: none;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                    cursor: pointer;
+                    z-index: 1000;
+                    transition: background-color 0.3s;
+                }
+                #refreshButton:hover {
+                    background-color: #0056b3;
+                }
+                #refreshButton:disabled {
+                    background-color: #6c757d;
+                    cursor: not-allowed;
+                }
+                #refreshButton i {
+                    font-size: 1.5rem;
+                }
+                #loadingOverlay {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0, 0, 0, 0.9);
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    z-index: 9999;
+                }
+                .loading-content {
+                    text-align: center;
+                    color: #fff;
+                    font-family: Arial, sans-serif;
+                    animation: fadeIn 0.5s ease-in;
+                }
+                .spinner {
+                    width: 60px;
+                    height: 60px;
+                    border: 6px solid #fff;
+                    border-top: 6px solid #007bff;
+                    border-radius: 50%;
+                    animation: spin 1s linear infinite;
+                    margin: 0 auto 20px;
+                }
+                .loading-content h2 {
+                    font-size: 2.5rem;
+                    margin-bottom: 15px;
+                    text-transform: uppercase;
+                    letter-spacing: 2px;
+                    color: #007bff;
+                    text-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+                }
+                .loading-content p {
+                    font-size: 1.2rem;
+                    max-width: 500px;
+                    line-height: 1.5;
+                }
+                @keyframes spin {
+                    0% { transform: rotate(0deg); }
+                    100% { transform: rotate(360deg); }
+                }
+                @keyframes fadeIn {
+                    from { opacity: 0; }
+                    to { opacity: 1; }
+                }
+            `;
+            document.head.appendChild(style);
+        
+            setTimeout(inicializarContenido, 50);
+        });
+    </script>
+
+
+
+
+
+
+</body>
+</html>
