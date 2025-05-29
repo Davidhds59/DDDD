@@ -1,814 +1,302 @@
+<!-- REPRODUCTOR M3U SERIES -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buscador Multimedia</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>IPTV Moderno</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <link href="https://cdn.plyr.io/3.7.8/plyr.css" rel="stylesheet" />
     <style>
-        :root {
-            --bg-dark: #1a1a1a;
-            --card-dark: #2d2d2d;
-            --text-dark: #ffffff;
-            --text-secondary-dark: #a0a0a0;
-        }
-
-        body.dark-theme {
-            background-color: #000000;
-            color: var(--text-dark);
-        }
-
-        .dark-theme .content-card {
-            background: #000000;
-            border: 1px solid #404040;
-        }
-
-        .dark-theme .filter-group {
-            background: var(--card-dark);
-            border: 1px solid #404040;
-        }
-
-        .dark-theme input,
-        .dark-theme select {
-            background: var(--bg-dark);
-            color: var(--text-dark);
-            border-color: #404040;
-        }
-
-        .dark-theme .categories span {
-            background: #404040;
-            color: var(--text-dark);
-        }
-
-        .dark-theme .synopsis {
-            color: var(--text-secondary-dark);
-        }
-
-        .sidebar {
-            position: fixed;
-            top: 0;
-            left: -300px;
-            width: 300px;
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            flex-direction: column;
             height: 100vh;
-            background: var(--card-dark);
-            transition: left 0.3s ease;
-            z-index: 1000;
+            margin: 0;
+        }
+
+        #header {
+            background: #000;
+            padding: 10px 20px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 2px solid #444;
+        }
+
+        #header img {
+            height: 50px;
+            margin-right: auto;
+        }
+
+        #player-container {
+            background-color: #000;
+            width: 100%;
+            height: 320px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        #videoPlayer {
+            width: 100%;
+            height: 250px;
+            max-height: 60vh;
+        }
+
+        @media (min-width: 768px) {
+            #videoPlayer {
+                max-height: 70vh;
+            }
+        }
+
+        @media (min-width: 1200px) {
+            #videoPlayer {
+                max-height: 80vh;
+            }
+        }
+
+        #search-container, #categories-container {
+            margin: 10px 20px;
+        }
+
+        #search, #category-select {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            background-color: #222;
+            color: #fff;
+        }
+
+        #playlist-container {
+            flex-grow: 1;
             overflow-y: auto;
+            padding: 10px 20px;
         }
 
-        .sidebar.open {
-            left: 0;
+        #playlist {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
 
-        .overlay {
+        #playlist li {
+            padding: 15px;
+            background-color: #222;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        #playlist li:hover {
+            background-color: #333;
+            transform: scale(1.02);
+        }
+
+        #playlist li.active {
+            background-color: #555;
+        }
+
+        #playlist li .icon {
+            font-size: 1.5rem;
+            color: #007bff;
+        }
+
+        #ad-container {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            width: 1px;
+            height: 1px;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
             display: none;
-            z-index: 999;
         }
 
-        .overlay.active {
-            display: block;
+        #ad-container iframe {
+            width: 90%;
+            height: 60%;
+            border: none;
         }
 
-        .content-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            height: 100%;
-            background: #ffffff;
-            border-radius: 1rem;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .content-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
-
-        .content-type, .update-date {
+        #close-ad {
             position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(0,0,0,0.8);
-            color: white;
-            padding: 0.25rem 0.75rem;
-            border-radius: 1rem;
-            font-size: 0.875rem;
-            z-index: 10;
-        }
-
-        .stats-badge{
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 10px 10px 10px 10px;
-            border-radius: 1rem;
-            font-size: 0.875rem;
-            z-index: 10;
-            text-align: center;
-
-        }
-
-        .content-image {
-            width: 100%;
-            height: 300px;
-            object-fit: cover;
-            transition: transform 0.3s ease;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .content-image.loaded {
-            opacity: 1;
-        }
-
-        .content-card:hover .content-image {
-            transform: scale(1.05);
-        }
-
-        .synopsis {
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            margin: 0.5rem 0;
-        }
-
-        .categories, .tags {
-            font-size: 0.875rem;
-            color: #666;
-        }
-
-        .highlight {
-            background-color: #ffd700;
-            padding: 0.1rem 0.2rem;
-            border-radius: 0.2rem;
-        }
-
-        .loading-spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #3498db;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .theme-toggle {
-            position: fixed;
             top: 20px;
             right: 20px;
-            z-index: 1001;
+            background: red;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            z-index: 1100;
         }
 
-        .search-toggle {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 1001;
+        #close-ad:hover {
+            background: darkred;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('') no-repeat center center/cover;
+            filter: brightness(20%) blur(2px);
+            z-index: -2;
         }
     </style>
 </head>
-<body class="bg-gray-100 min-h-screen p-4">
-    <button class="theme-toggle bg-gray-800 text-white p-2 rounded-full">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" ></path>
-        </svg>
-    </button>
-
-    <button class="search-toggle bg-blue- text-white p-2 rounded-full">
-        
- 
-    </button>
-    <button class="search-toggle bg-blue text-black p-2 rounded-full">
-    <input type="text" id="buscador" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-" placeholder=" Buscar títulos, categorías...">
-    </button>
-
-    <div class="overlay"></div>
-
-    <div class="sidebar p-4">
-        <div class="mb-4 flex justify-between items-center">
-            <h2 class="text-xl font-bold">Filtros</h2>
-            <button class="close-sidebar text-gray-500 hover:text-gray-700">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" ></path>
-                </svg>
-            </button>
-        </div>
-
-        <div class="space-y-4">
-            <div>
-                
-            </div>
-            
-            <div>
-                <label class="block text-sm font-medium mb-2">Filtrar por Tipo</label>
-                <select id="filtro-tipo" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500">
-                    <option value="todos">Todos los tipos</option>
-                    <option value="Película">Películas</option>
-                    <option value="Serie">Series</option>
-                    <option value="Anime">Anime</option>
-                </select>
-            </div>
-            
-            <div>
-                <label class="block text-sm font-medium mb-2">Filtrar por Categoría</label>
-                <select id="filtro-categoria" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500">
-                    <option value="todos">Todas las categorías</option>
-                </select>
-            </div>
-            
-            <div>
-                <label class="block text-sm font-medium mb-2">Filtrar por Temporadas</label>
-                <select id="filtro-temporadas" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500">
-                    <option value="todos">Todas las temporadas</option>
-                    <option value="1">1 Temporada</option>
-                    <option value="2-3">2-3 Temporadas</option>
-                    <option value="4+">4+ Temporadas</option>
-                </select>
-            </div>
-        
-            <div>
-                <label class="block text-sm font-medium mb-2">Ordenar por</label>
-                <select id="ordenar-por" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500">
-                    <option value="fecha_desc">Más recientes</option>
-                    <option value="fecha_asc">Más antiguos</option>
-                    <option value="visitas_desc">Más vistos</option>
-                    <option value="visitas_asc">Menos vistos</option>
-                </select>
-            </div>
-        </div>
+<body>
+    <div id="player-container">
+        <video id="videoPlayer" controls playsinline></video>
     </div>
 
-    <div class="container mx-auto">
-
-        <div id="loading" class="flex justify-center items-center p-8 d-none">
-            <div class="loading-spinner"></div>
-        </div>
-
-        <div id="resultados" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            <!-- Los resultados se insertarán aquí -->
-        </div>
-
-        <div id="load-more" class="flex justify-center mt-8 mb-8 d-none">
-            <div class="loading-spinner"></div>
-        </div>
+    <div id="ad-container">
+        <button id="close-ad">X</button>
     </div>
 
-        <script>
-            const API_BASE_URL = 'https://epicstream.xyz.mediapanel.site/api.php';
-            const API_KEY = 'cfdfa64a3655b726f80396e82afa925827e6ddceef28350b70bc02179e690f44';
-            const ITEMS_PER_PAGE = 12;
-            let currentPage = 1;
-            let isLoading = false;
-            let timeoutId = null;
-            let moviesCache = [];
-            let seriesCache = [];
-            let allCategories = new Set();
-            let currentResults = [];
-            
-            document.addEventListener('DOMContentLoaded', () => {
-                const buscador = document.getElementById('buscador');
-                const filtroCategoria = document.getElementById('filtro-categoria');
-                const filtroTemporadas = document.getElementById('filtro-temporadas');
-                const filtroTipo = document.getElementById('filtro-tipo');
-                const ordenarPor = document.getElementById('ordenar-por');
-                const resultadosContainer = document.getElementById('resultados');
-                const loadingIndicator = document.getElementById('loading');
-                const sidebar = document.querySelector('.sidebar');
-                const overlay = document.querySelector('.overlay');
-                const searchToggle = document.querySelector('.search-toggle');
-                const closeButton = document.querySelector('.close-sidebar');
-                const themeToggle = document.querySelector('.theme-toggle');
-            
-                const isDarkMode = localStorage.getItem('darkMode') === 'true';
-                if (isDarkMode) {
-                    document.body.classList.add('dark-theme');
-                }
-            
-                themeToggle.addEventListener('click', () => {
-                    document.body.classList.toggle('dark-theme');
-                    localStorage.setItem('darkMode', document.body.classList.contains('dark-theme'));
-                });
-            
-                searchToggle.addEventListener('click', () => {
-                    sidebar.classList.add('open');
-                    overlay.classList.add('active');
-                });
-            
-                closeButton.addEventListener('click', () => {
-                    sidebar.classList.remove('open');
-                    overlay.classList.remove('active');
-                });
-            
-                overlay.addEventListener('click', () => {
-                    sidebar.classList.remove('open');
-                    overlay.classList.remove('active');
-                });
-            
-                const buscarConDelay = () => {
-                    clearTimeout(timeoutId);
-                    
-                    loadingIndicator.style.display = 'block';
-                    resultadosContainer.style.display = 'none';
-            
-                    timeoutId = setTimeout(() => {
-                        currentPage = 1;
-                        try {
-                            const consulta = buscador.value.trim().toLowerCase();
-                            const categoria = filtroCategoria.value;
-                            const temporadas = filtroTemporadas.value;
-                            const tipo = filtroTipo.value;
-                            const orden = ordenarPor.value;
-                            
-                            // Verificar si tenemos al menos un tipo de contenido
-                            const hayContenido = moviesCache.length > 0 || seriesCache.length > 0;
-                            
-                            if (!hayContenido) {
-                                console.warn('No hay datos disponibles, recargando...');
-                                cargarDatosIniciales();
-                                return;
-                            }
-            
-                            buscarEnDatosCache(consulta, categoria, temporadas, tipo, orden, resultadosContainer);
-                        } catch (error) {
-                            console.error('Error en búsqueda:', error);
-                            mostrarError(resultadosContainer, 'Error al realizar la búsqueda');
-                        } finally {
-                            loadingIndicator.style.display = 'none';
-                            resultadosContainer.style.display = 'grid';
-                        }
-                    }, 300);
-                };
-            
-                [buscador, filtroCategoria, filtroTemporadas, filtroTipo, ordenarPor].forEach(elemento => {
-                    elemento.addEventListener('input', buscarConDelay);
-                    elemento.addEventListener('change', buscarConDelay);
-                });
-            
-                let scrollTimeout;
-                window.addEventListener('scroll', () => {
-                    if (isLoading) return;
-            
-                    clearTimeout(scrollTimeout);
-                    scrollTimeout = setTimeout(() => {
-                        const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
-                        if (scrollTop + clientHeight >= scrollHeight - 5) {
-                            cargarMasResultados();
-                        }
-                    }, 100);
-                });
-            
-                cargarDatosIniciales();
-            });
-            
-            function cargarMasResultados() {
-                if (isLoading || currentResults.length <= currentPage * ITEMS_PER_PAGE) return;
-            
-                isLoading = true;
-                const loadMore = document.getElementById('load-more');
-                loadMore.classList.remove('d-none');
-            
-                setTimeout(() => {
-                    currentPage++;
-                    const inicio = (currentPage - 1) * ITEMS_PER_PAGE;
-                    const fin = currentPage * ITEMS_PER_PAGE;
-                    const nuevosResultados = currentResults.slice(inicio, fin);
-            
-                    const container = document.getElementById('resultados');
-                    agregarResultados(nuevosResultados, container);
-                    
-                    const startIndex = inicio;
-                    container.querySelectorAll('.content-card').forEach((card, index) => {
-                        if (index >= startIndex) {
-                            agregarEventListenerTarjeta(card, nuevosResultados[index - startIndex]);
-                        }
-                    });
-            
-                    isLoading = false;
-                    loadMore.classList.add('d-none');
-                }, 500);
-            }
-            
-            function agregarEventListenerTarjeta(card, item) {
-                card.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    if (item && item.id_tmdb) {
-                        localStorage.setItem('tmdbId', item.id_tmdb);
-                        window.location.href = item.tipo === 'Película' ? 'go:peliculas' : 'go:series';
-                    }
-                });
-            }
-            
-            function observarImagenes() {
-                const imageObserver = new IntersectionObserver((entries, observer) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            const img = entry.target;
-                            img.src = img.dataset.src;
-                            img.classList.add('loaded');
-                            observer.unobserve(img);
-                        }
-                    });
-                });
-            
-                document.querySelectorAll('img[data-src]').forEach(img => {
-                    imageObserver.observe(img);
-                });
-            }
-            
-            function normalizarTexto(texto) {
-                return texto.normalize("NFD")
-                           .replace(/[\u0300-\u036f]/g, "")
-                           .toLowerCase()
-                           .trim();
-            }
-            
-            async function cargarDatosIniciales() {
-                const loadingIndicator = document.getElementById('loading');
-                const resultadosContainer = document.getElementById('resultados');
-                const filtroCategoria = document.getElementById('filtro-categoria');
-                
-                try {
-                    loadingIndicator.style.display = 'block';
-                    resultadosContainer.style.display = 'none';
-            
-                    const [movieResponse, seriesResponse] = await Promise.allSettled([
-                        obtenerDatosAPI('peliculas'),
-                        obtenerDatosAPI('series')
-                    ]);
-            
-                    // Procesar películas si están disponibles
-                    if (movieResponse.status === 'fulfilled' && movieResponse.value?.data) {
-                        moviesCache = (movieResponse.value.data || []).map(pelicula => ({
-                            ...pelicula,
-                            tipo: 'Película',
-                            searchText: generarTextoParaBusqueda({
-                                ...pelicula,
-                                tipo: 'Película'
-                            }),
-                            url_imagen: pelicula.url_imagen || '/api/placeholder/300/450',
-                            fecha_actualizacion: pelicula.fecha_actualizacion || pelicula.fecha_subida
-                        }));
-                    }
-            
-                    // Procesar series si están disponibles
-                    if (seriesResponse.status === 'fulfilled' && seriesResponse.value?.data) {
-                        seriesCache = (seriesResponse.value.data || []).map(serie => {
-                            const temporadasCount = serie.temporadas?.length || 0;
-                            const totalCapitulos = serie.temporadas?.reduce((total, temp) => 
-                                total + (temp.capitulos?.length || 0), 0) || 0;
-                            
-                            const esAnime = (serie.categorias || '').toLowerCase().includes('anime');
-                            
-                            return {
-                                ...serie,
-                                tipo: esAnime ? 'Anime' : 'Serie',
-                                temporadasCount,
-                                totalCapitulos,
-                                url_imagen: serie.url_imagen || '/api/placeholder/300/450',
-                                searchText: generarTextoParaBusqueda({
-                                    ...serie,
-                                    tipo: esAnime ? 'Anime' : 'Serie',
-                                    temporadasText: serie.temporadas?.map(temp => 
-                                        temp.capitulos?.map(cap => cap.nombre).join(' ')
-                                    ).join(' ') || ''
-                                }),
-                                fecha_actualizacion: serie.fecha_actualizacion || serie.fecha_subida
-                            };
-                        });
-                    }
-            
-                    // Verificar si tenemos algún contenido
-                    if (moviesCache.length === 0 && seriesCache.length === 0) {
-                        throw new Error('No se pudo cargar ningún contenido');
-                    }
-            
-                    // Actualizar categorías
-                    allCategories.clear();
-                    [...moviesCache, ...seriesCache].forEach(item => {
-                        if (item.categorias) {
-                            item.categorias.split(',').forEach(cat => {
-                                const trimmedCat = cat.trim();
-                                if (trimmedCat) allCategories.add(trimmedCat);
-                            });
-                        }
-                    });
-            
-                    actualizarCategoriasFiltro(filtroCategoria);
-                    buscarEnDatosCache('', 'todos', 'todos', 'todos', 'fecha_desc', resultadosContainer);
-            
-                } catch (error) {
-                    console.error('Error en carga inicial:', error);
-                    mostrarError(resultadosContainer, 'Error al cargar los datos');
-                } finally {
-                    loadingIndicator.style.display = 'none';
-                    resultadosContainer.style.display = 'grid';
-                }
-            }
-            
-            function actualizarCategoriasFiltro(filtroCategoria) {
-                const opcionTodos = filtroCategoria.querySelector('option[value="todos"]');
-                filtroCategoria.innerHTML = '';
-                filtroCategoria.appendChild(opcionTodos);
-            
-                const categoriasOrdenadas = Array.from(allCategories).sort((a, b) => 
-                    normalizarTexto(a).localeCompare(normalizarTexto(b))
-                );
-            
-                categoriasOrdenadas.forEach(categoria => {
-                    const option = document.createElement('option');
-                    option.value = categoria.toLowerCase();
-                    option.textContent = categoria;
-                    filtroCategoria.appendChild(option);
-                });
-            }
-            
-            async function obtenerDatosAPI(type) {
-                try {
-                    const response = await fetch(`${API_BASE_URL}?api_key=${API_KEY}&type=${type}`);
-                    
-                    if (!response.ok) {
-                        throw new Error(`Error API: ${response.status}`);
-                    }
-                    
-                    const data = await response.json();
-                    
-                    if (!data?.data) {
-                        throw new Error(`Datos inválidos para ${type}`);
-                    }
-                    
-                    return data;
-                } catch (error) {
-                    console.error(`Error API ${type}:`, error);
-                    throw error;
-                }
-            }
-            
-            function buscarEnDatosCache(consulta, categoria, temporadas, tipo, orden, container) {
-                // Verificar si hay al menos algún contenido disponible
-                const hayContenido = moviesCache.length > 0 || seriesCache.length > 0;
-                
-                if (!container || !hayContenido) {
-                    mostrarError(container, 'No hay contenido disponible');
-                    return;
-                }
-            
-                const consultaNormalizada = normalizarTexto(consulta);
-                
-                let resultadosFiltrados = [...moviesCache, ...seriesCache];
-            
-                if (tipo !== 'todos') {
-                    resultadosFiltrados = resultadosFiltrados.filter(item => item.tipo === tipo);
-                }
-                
-                currentResults = resultadosFiltrados.filter(item => {
-                    const cumpleCategoria = categoria === 'todos' || 
-                        (item.categorias || '').toLowerCase().includes(categoria.toLowerCase());
-                    
-                    const cumpleTemporadas = temporadas === 'todos' || 
-                        (item.tipo === 'Película') ||
-                        (temporadas === '1' && item.temporadasCount === 1) ||
-                        (temporadas === '2-3' && (item.temporadasCount >= 2 && item.temporadasCount <= 3)) ||
-                        (temporadas === '4+' && item.temporadasCount >= 4);
-                    
-                    const cumpleBusqueda = !consultaNormalizada || 
-                        normalizarTexto(item.searchText).includes(consultaNormalizada);
-            
-                    return cumpleCategoria && cumpleTemporadas && cumpleBusqueda;
-                });
-            
-                currentResults.sort((a, b) => {
-                    switch(orden) {
-                        case 'fecha_desc':
-                            return new Date(b.fecha_actualizacion) - new Date(a.fecha_actualizacion);
-                        case 'fecha_asc':
-                            return new Date(a.fecha_actualizacion) - new Date(b.fecha_actualizacion);
-                        case 'visitas_desc':
-                            return parseInt(b.total_visitas || 0) - parseInt(a.total_visitas || 0);
-                        case 'visitas_asc':
-                            return parseInt(a.total_visitas || 0) - parseInt(b.total_visitas || 0);
-                        default:
-                            return new Date(b.fecha_actualizacion) - new Date(a.fecha_actualizacion);
-                    }
-                });
-            
-                mostrarResultados(currentResults.slice(0, ITEMS_PER_PAGE), container, consultaNormalizada, true);
-            }
-            
-            function agregarResultados(resultados, container) {
-                const consulta = document.getElementById('buscador').value.trim().toLowerCase();
-                const nuevoContenido = generarHTMLResultados(resultados, consulta);
-                container.insertAdjacentHTML('beforeend', nuevoContenido);
-                observarImagenes();
-            }
-            
-            function generarHTMLResultados(resultados, consulta) {
-                return resultados.map(item => {
-                    const serieInfo = item.tipo !== 'Película' ? `
-                        <div class="text-sm mt-2">
-                            <span class="font-semibold">${item.temporadasCount}</span> temporada${item.temporadasCount !== 1 ? 's' : ''}, 
-                            <span class="font-semibold">${item.totalCapitulos}</span> capítulo${item.totalCapitulos !== 1 ? 's' : ''}
-                        </div>` : '';
-            
-                    const visitas = parseInt(item.total_visitas || 0).toLocaleString('es-ES');
-                    const fechaActualizacion = formatearFecha(item.fecha_actualizacion || item.fecha_subida);
-                    const calidadBadge = item.calidad ? `<span class="absolute top-16 right-2 bg-black bg-opacity-80 text-white px-3 py-1 rounded-full text-sm">
-                        ${item.calidad.toUpperCase()}
-                    </span>` : '';
-        
-                return `
-                    <div class="relative group">
-                        <div class="content-card shadow-lg" data-id="${item.id_tmdb}" data-tipo="${item.tipo}">
-                            <span class="content-type">${item.tipo}</span>
-                            ${calidadBadge}
-                            
-                            <div class="stats-badge">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path>
-                                    <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"></path>
-                                </svg>
-                                ${visitas}
-                            </div>
-                            
-                            <span class="update-date">
-                                Actualizado: ${fechaActualizacion}
-                            </span>
-                            
-                            <img 
-                                data-src="${item.url_imagen}"
-                                class="content-image"
-                                alt="${item.titulo}"
-                                src="/api/placeholder/300/450"
-                            >
-                            
-                            <div class="p-4">
-                                <h3 class="text-xl font-bold mb-2">
-                                    ${resaltarTexto(item.titulo, consulta)}
-                                </h3>
-                                
-                                ${serieInfo}
-                                
-                                <p class="synopsis text-gray-600 mt-2">
-                                    ${resaltarTexto(item.sinopsis, consulta)}
-                                </p>
-                                
-                                <div class="categories mt-3">
-                                    ${(item.categorias || '').split(',').map(cat => `
-                                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-                                            ${resaltarTexto(cat.trim(), consulta)}
-                                        </span>
-                                    `).join('')}
-                                </div>
-                                
-                                <div class="tags mt-2 text-gray-500">
-                                    ${procesarEtiquetas(item.etiquetas)}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-        
-        function mostrarResultados(resultados, container, consulta, limpiarContenedor = false) {
-            const loadingIndicator = document.getElementById('loading');
-            const loadMore = document.getElementById('load-more');
-            
-            loadingIndicator.style.display = 'none';
-            container.style.display = 'grid';
-        
-            if (resultados.length === 0 && limpiarContenedor) {
-                container.innerHTML = `
-                    <div class="col-span-full text-center">
-                        <div class="bg-blue-100 text-blue-800 p-4 rounded-lg">
-                            No se encontraron resultados${consulta ? ` para "${consulta}"` : ''}.
-                        </div>
-                    </div>`;
-                return;
-            }
-        
-            if (limpiarContenedor) {
-                container.innerHTML = '';
-            }
-        
-            const nuevoContenido = generarHTMLResultados(resultados, consulta);
-            container.insertAdjacentHTML('beforeend', nuevoContenido);
-            
-            if (currentResults.length > ITEMS_PER_PAGE) {
-                loadMore.style.display = 'block';
-            } else {
-                loadMore.style.display = 'none';
-            }
-        
-            observarImagenes();
-        
-            container.querySelectorAll('.content-card').forEach((card, index) => {
-                agregarEventListenerTarjeta(card, resultados[index]);
-            });
-        }
-        
-        function generarTextoParaBusqueda(item) {
-            return [
-                item.titulo || '',
-                item.sinopsis || '',
-                item.categorias || '',
-                item.etiquetas || '',
-                item.tipo || '',
-                item.temporadasText || '',
-                item.calidad || ''
-            ].join(' ').toLowerCase().trim();
-        }
-        
-        function resaltarTexto(texto, consulta) {
-            if (!texto || !consulta) return texto;
-            
-            const consultaNormalizada = normalizarTexto(consulta);
-            const textoNormalizado = normalizarTexto(texto);
-            
-            if (!textoNormalizado.includes(consultaNormalizada)) return texto;
-            
-            const regex = new RegExp(`(${consultaNormalizada})`, 'gi');
-            return texto.replace(regex, '<span class="highlight">$1</span>');
-        }
-        
-        function procesarEtiquetas(etiquetas) {
-            if (!etiquetas) return '';
-            
-            return etiquetas
-                .split(/[,\s]+/)
-                .filter(tag => tag)
-                .map(tag => `
-                    <span class="inline-block text-blue-600 mr-2">
-                        #${tag.trim()}
-                    </span>
-                `)
-                .join('');
-        }
-        
-        function formatearFecha(fechaOriginal) {
+    <div id="search-container">
+        <input type="text" id="search" placeholder="Buscar capítulo..." onkeyup="filterChannels()">
+    </div>
+
+    <div id="categories-container">
+        <select id="category-select" onchange="filterByCategory(this.value)">
+            <option value="">Todas las Temporadas</option>
+        </select>
+    </div>
+
+    <div id="playlist-container">
+        <ul id="playlist"></ul>
+    </div>
+
+    <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
+    <script>
+        const m3uUrl = 'AQUI_VA_EL_LINK_DE_CANALES';
+        const playlistElement = document.getElementById('playlist');
+        const categorySelect = document.getElementById('category-select');
+        const searchInput = document.getElementById('search');
+        const adContainer = document.getElementById('ad-container');
+        const closeAdButton = document.getElementById('close-ad');
+        const videoElement = document.getElementById('videoPlayer');
+        let channels = [];
+        let categories = new Set();
+        let adShown = false;
+        let player = new Plyr(videoElement, { autoplay: true });
+
+        async function loadM3U() {
             try {
-                const fecha = new Date(fechaOriginal);
-                const ahora = new Date();
-                const diferencia = ahora - fecha;
-                const segundos = Math.floor(diferencia / 1000);
-                const minutos = Math.floor(segundos / 60);
-                const horas = Math.floor(minutos / 60);
-                const dias = Math.floor(horas / 24);
-        
-                if (dias < 1) {
-                    if (horas < 1) {
-                        if (minutos < 1) {
-                            return 'Hace un momento';
-                        }
-                        return `Hace ${minutos} minuto${minutos !== 1 ? 's' : ''}`;
-                    }
-                    return `Hace ${horas} hora${horas !== 1 ? 's' : ''}`;
-                }
-                if (dias < 7) {
-                    return `Hace ${dias} día${dias !== 1 ? 's' : ''}`;
-                }
-                
-                return fecha.toLocaleDateString('es-ES', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                });
+                const response = await fetch(m3uUrl);
+                const data = await response.text();
+                parseM3U(data);
             } catch (error) {
-                console.error('Error al formatear fecha:', error);
-                return fechaOriginal;
+                console.error('Error cargando lista M3U:', error);
             }
         }
-        
-        function mostrarError(container, mensaje) {
-            if (!container) {
-                console.error('Contenedor no encontrado');
-                return;
-            }
-            
-            container.innerHTML = `<div class="col-span-full">
-                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg">
-                    <p class="font-bold">Error</p>
-                    <p>${mensaje}</p>
-                    <p class="mt-2 text-sm">Por favor, intenta nuevamente o recarga la página.</p>
-                </div>
-            </div>`;
-        
-            const loadingIndicator = document.getElementById('loading');
-            if (loadingIndicator) loadingIndicator.style.display = 'none';
-            container.style.display = 'grid';
+
+        function parseM3U(data) {
+            const lines = data.split('\n');
+            let currentChannel = null;
+            channels = [];
+
+            lines.forEach(line => {
+                line = line.trim();
+                if (line.startsWith('#EXTINF')) {
+                    const groupMatch = line.match(/group-title="([^"]+)"/);
+                    currentChannel = {
+                        name: line.split(',')[1],
+                        url: '',
+                        category: groupMatch ? groupMatch[1] : 'General'
+                    };
+                    categories.add(currentChannel.category);
+                } else if (line && currentChannel) {
+                    currentChannel.url = line;
+                    channels.push(currentChannel);
+                    currentChannel = null;
+                }
+            });
+
+            renderCategories();
+            displayChannels(channels);
         }
+
+        function renderCategories() {
+            categories.forEach(category => {
+                const option = document.createElement('option');
+                option.value = category;
+                option.textContent = category;
+                categorySelect.appendChild(option);
+            });
+        }
+
+        function displayChannels(channelList) {
+            playlistElement.innerHTML = '';
+            channelList.forEach(channel => {
+                const li = document.createElement('li');
+                li.innerHTML = `<i class="bi bi-play icon"></i> ${channel.name}`;
+                li.onclick = () => playChannel(channel.url, li);
+                playlistElement.appendChild(li);
+            });
+        }
+
+        function playChannel(url, listItem) {
+            player.source = {
+                type: 'video',
+                sources: [
+                    {
+                        src: url,
+                        type: 'application/vnd.apple.mpegurl'
+                    }
+                ]
+            };
+
+            document.querySelectorAll('#playlist li').forEach(item => item.classList.remove('active'));
+            listItem.classList.add('active');
+
+            if (!adShown) {
+                setTimeout(() => {
+                    adContainer.style.display = 'flex';
+                }, 8000);
+                adShown = true;
+            }
+        }
+
+        function filterChannels() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const filteredChannels = channels.filter(channel =>
+                channel.name.toLowerCase().includes(searchTerm)
+            );
+            displayChannels(filteredChannels);
+        }
+
+        function filterByCategory(category) {
+            const filteredChannels = category
+                ? channels.filter(channel => channel.category === category)
+                : channels;
+            displayChannels(filteredChannels);
+        }
+
+        closeAdButton.addEventListener('click', () => {
+            adContainer.style.display = 'none';
+            player.play();
+        });
+
+        loadM3U();
     </script>
 </body>
 </html>
