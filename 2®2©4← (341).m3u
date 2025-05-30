@@ -1,302 +1,473 @@
-<!-- REPRODUCTOR M3U SERIES -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>IPTV Moderno</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
-    <link href="https://cdn.plyr.io/3.7.8/plyr.css" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Series Viewer Pro</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.6.1/plyr.css" />
+    
     <style>
+        :root {
+            --primary-color: #000000;
+            --secondary-color: #243647;
+            --accent-color: #3498db;
+            --text-primary: #ffffff;
+            --text-secondary: #93adc8;
+            --spacing-xs: 0.25rem;
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+            --spacing-xl: 2rem;
+        }
+        
+        /* Base styles */
         body {
-            background-color: #000;
-            color: #fff;
-            font-family: 'Roboto', sans-serif;
+            font-family: 'Inter', sans-serif;
+            background-color: #000000;
+            color: var(--text-primary);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        
+        /* Grid responsiveness */
+        .episode-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: var(--spacing-md);
+            padding: var(--spacing-md);
+            width: 100%;
+            max-width: 1440px;
+            margin: 0 auto;
+            box-sizing: border-box;
+        }
+        
+        @media (max-width: 640px) {
+            .episode-grid {
+                grid-template-columns: 1fr;
+                padding: var(--spacing-sm);
+                gap: var(--spacing-sm);
+            }
+        }
+        
+        /* Card responsiveness */
+        .episode-card {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            background-color: var(--secondary-color);
             display: flex;
             flex-direction: column;
-            height: 100vh;
-            margin: 0;
+            height: 100%;
         }
-
-        #header {
-            background: #000;
-            padding: 10px 20px;
-            color: #fff;
+        
+        .episode-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        @media (hover: none) {
+            .episode-card:hover {
+                transform: none;
+            }
+        }
+        
+        .episode-thumbnail {
+            position: relative;
+            padding-top: 56.25%;
+            background-size: cover;
+            background-position: center;
+            width: 100%;
+        }
+        
+        .episode-info {
+            padding: var(--spacing-md);
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+        
+        /* Search bar responsiveness */
+        .search-bar {
+            background: var(--secondary-color);
+            border-radius: 8px;
+            padding: var(--spacing-sm) var(--spacing-md);
+            margin: var(--spacing-md);
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            border-bottom: 2px solid #444;
-        }
-
-        #header img {
-            height: 50px;
+            gap: var(--spacing-sm);
+            max-width: 600px;
+            width: calc(100% - var(--spacing-md) * 2);
+            margin-left: auto;
             margin-right: auto;
         }
-
-        #player-container {
-            background-color: #000;
-            width: 100%;
-            height: 320px;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        #videoPlayer {
-            width: 100%;
-            height: 250px;
-            max-height: 60vh;
-        }
-
-        @media (min-width: 768px) {
-            #videoPlayer {
-                max-height: 70vh;
-            }
-        }
-
-        @media (min-width: 1200px) {
-            #videoPlayer {
-                max-height: 80vh;
-            }
-        }
-
-        #search-container, #categories-container {
-            margin: 10px 20px;
-        }
-
-        #search, #category-select {
-            width: 100%;
-            padding: 10px;
-            font-size: 1rem;
+        
+        .search-input {
+            background: #000 !important;
             border: none;
-            border-radius: 5px;
-            background-color: #222;
-            color: #fff;
-        }
-
-        #playlist-container {
+            color: var(--text-primary);
             flex-grow: 1;
-            overflow-y: auto;
-            padding: 10px 20px;
+            outline: none;
+            padding: var(--spacing-sm);
+            border-radius: 4px;
+            font-size: 1rem;
         }
-
-        #playlist {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        #playlist li {
-            padding: 15px;
-            background-color: #222;
-            border-radius: 5px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: background-color 0.3s, transform 0.2s;
-        }
-
-        #playlist li:hover {
-            background-color: #333;
-            transform: scale(1.02);
-        }
-
-        #playlist li.active {
-            background-color: #555;
-        }
-
-        #playlist li .icon {
-            font-size: 1.5rem;
-            color: #007bff;
-        }
-
-        #ad-container {
+        
+        /* Modal responsiveness */
+        .modal {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 1px;
-            height: 1px;
-            background: rgba(0, 0, 0, 0.9);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            display: none;
-        }
-
-        #ad-container iframe {
-            width: 90%;
-            height: 60%;
-            border: none;
-        }
-
-        #close-ad {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: red;
-            color: white;
-            border: none;
-            padding: 10px;
-            cursor: pointer;
-            z-index: 1100;
-        }
-
-        #close-ad:hover {
-            background: darkred;
-        }
-
-        body::before {
-            content: "";
-            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: url('') no-repeat center center/cover;
-            filter: brightness(20%) blur(2px);
-            z-index: -2;
+            background: rgba(0,0,0,0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            padding: var(--spacing-sm);
+            box-sizing: border-box;
+        }
+        
+        .modal.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal-content {
+            width: 95%;
+            max-width: 1200px;
+            height: 90vh;
+            background: var(--primary-color);
+            border-radius: 12px;
+            position: relative;
+            padding: var(--spacing-md);
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+        }
+        
+        @media (max-width: 768px) {
+            .modal-content {
+                width: 100%;
+                height: 100vh;
+                border-radius: 0;
+                padding: var(--spacing-sm);
+            }
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-md);
+            border-bottom: 1px solid var(--secondary-color);
+            flex-wrap: wrap;
+            gap: var(--spacing-sm);
+        }
+        
+        @media (max-width: 480px) {
+            .modal-header {
+                padding: var(--spacing-sm);
+            }
+        }
+        
+        .modal-controls {
+            display: flex;
+            gap: var(--spacing-md);
+            padding: var(--spacing-md);
+            background: var(--secondary-color);
+            border-radius: 8px;
+            margin-top: var(--spacing-md);
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        @media (max-width: 640px) {
+            .modal-controls {
+                gap: var(--spacing-sm);
+                padding: var(--spacing-sm);
+            }
+        }
+        
+        .player-wrapper {
+            flex-grow: 1;
+            position: relative;
+            background: #000;
+            border-radius: 8px;
+            overflow: hidden;
+            height: calc(90vh - 200px);
+            min-height: 250px;
+        }
+        
+        @media (max-width: 768px) {
+            .player-wrapper {
+                height: calc(100vh - 250px);
+            }
+        }
+        
+        /* Navigation controls responsiveness */
+        .episode-navigation {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: var(--spacing-md);
+            background: rgba(0,0,0,0.5);
+            border-radius: 50%;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 10;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        @media (max-width: 768px) {
+            .episode-navigation {
+                opacity: 1;
+                padding: var(--spacing-sm);
+                width: 36px;
+                height: 36px;
+            }
+        }
+        
+        @media (hover: none) {
+            .episode-navigation {
+                opacity: 1;
+            }
+        }
+        
+        .prev-episode {
+            left: var(--spacing-md);
+        }
+        
+        .next-episode {
+            right: var(--spacing-md);
+        }
+        
+        /* Source selector responsiveness */
+        .source-selector {
+            background: var(--secondary-color);
+            border: 1px solid var(--accent-color);
+            color: var(--text-primary);
+            padding: var(--spacing-sm);
+            border-radius: 4px;
+            outline: none;
+            font-size: 1rem;
+            max-width: 100%;
+        }
+        
+        /* Badge responsiveness */
+        .last-watched-badge {
+            position: absolute;
+            top: var(--spacing-md);
+            right: var(--spacing-md);
+            background: var(--accent-color);
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: 4px;
+            font-size: 0.875rem;
+            z-index: 1;
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--primary-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            display: none !important;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid var(--secondary-color);
+            border-top-color: var(--accent-color);
+            border-radius: 50%;
+            animation: spinner 1s linear infinite;
+        }
+        
+        /* Video player responsiveness */
+        #video-player {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        #video-player iframe,
+        #video-player video {
+            width: 100%;
+            height: 100%;
+            border: none;
+            object-fit: contain;
+        }
+
+        .plyr{
+            width: 100% !important;
+        }
+        
+        @media (max-width: 480px) {
+            #video-player iframe,
+            #video-player video {
+                object-fit: cover;
+            }
+        }
+        
+        /* Progress indicator responsiveness */
+        .progress-indicator {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            background: var(--accent-color);
+            transition: width 0.3s ease;
+            z-index: 2;
+        }
+        
+        @media (max-width: 480px) {
+            .progress-indicator {
+                height: 2px;
+            }
+        }
+        
+        /* Skeleton loading animation */
+        .skeleton {
+            animation: skeleton-loading 1s linear infinite alternate;
+            background: linear-gradient(90deg, #243647 0%, #2c4156 50%, #243647 100%);
+            background-size: 200% 100%;
+        }
+        
+        @keyframes skeleton-loading {
+            0% {
+                background-position: 200% 0;
+            }
+            100% {
+                background-position: -200% 0;
+            }
         }
     </style>
 </head>
 <body>
-    <div id="player-container">
-        <video id="videoPlayer" controls playsinline></video>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay">
+        <div class="spinner"></div>
     </div>
 
-    <div id="ad-container">
-        <button id="close-ad">X</button>
+    <div class="min-h-screen bg-[var(--primary-color)]">
+        <!-- Header con Búsqueda -->
+        <header class="sticky top-0 z-10 bg-[var(--primary-color)] shadow-lg">
+            <div class="container mx-auto px-4 py-4">
+                <div class="flex items-center justify-between gap-4">
+                    <button onclick="history.back()" class="text-white hover:text-[var(--accent-color)] transition-colors">
+                        <i class="fas fa-arrow-left text-xl"></i>
+                    </button>
+                    <div class="search-bar flex-grow max-w-2xl">
+                        <i class="fas fa-search text-[var(--text-secondary)]"></i>
+                        <input type="text" class="search-input" placeholder="Buscar episodios...">
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Banner y Detalles -->
+        <section id="serie-banner" class="relative min-h-[400px] bg-cover bg-center">
+            <div class="absolute inset-0 bg-gradient-to-t from-[var(--primary-color)] to-transparent"></div>
+            <div class="container mx-auto px-4 py-8 relative z-1">
+                <div class="flex flex-col gap-4 mt-[200px]">
+                    <h1 id="serie-name" class="text-4xl font-bold"></h1>
+                    <p id="serie-overview" class="text-lg max-w-2xl"></p>
+                    <div class="flex gap-4 flex-wrap">
+                        <div class="bg-[var(--secondary-color)] px-4 py-2 rounded-full">
+                            <i class="fas fa-film mr-2"></i>
+                            <span id="serie-status"></span>
+                        </div>
+                        <div class="bg-[var(--secondary-color)] px-4 py-2 rounded-full">
+                            <i class="fas fa-calendar mr-2"></i>
+                            <span id="serie-aired"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Selector de Temporada -->
+        <section class="container mx-auto px-4 py-4">
+            <div class="flex items-center gap-4">
+                <select id="season-selector" class="bg-[var(--secondary-color)] text-white rounded-lg px-4 py-2 flex-grow max-w-xs">
+                    <option value="">Cargando temporadas...</option>
+                </select>
+                <div id="season-indicators" class="flex gap-2"></div>
+            </div>
+        </section>
+
+        <!-- Grid de Episodios -->
+        <section id="episodes-grid" class="episode-grid"></section>
+
+        <!-- Modal de Reproducción -->
+        <div id="player-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="current-episode-title" class="text-xl font-bold"></h2>
+                    <div class="flex gap-4">
+                        <button id="cast-button" class="hover:text-[var(--accent-color)]">
+                            <i class="fas fa-cast"></i>
+                        </button>
+                        <button id="close-modal" class="hover:text-[var(--accent-color)]">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="modal-controls">
+                    <select id="source-selector" class="source-selector">
+                        <option value="">Cargando fuentes...</option>
+                    </select>
+                    <button id="mark-watched" class="hover:text-[var(--accent-color)]">
+                        <i class="far fa-eye"></i>
+                    </button>
+                </div>
+
+                <div class="player-wrapper">
+                    <div id="video-player"></div>
+                    <button class="episode-navigation prev-episode">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="episode-navigation next-episode">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div id="search-container">
-        <input type="text" id="search" placeholder="Buscar capítulo..." onkeyup="filterChannels()">
-    </div>
-
-    <div id="categories-container">
-        <select id="category-select" onchange="filterByCategory(this.value)">
-            <option value="">Todas las Temporadas</option>
-        </select>
-    </div>
-
-    <div id="playlist-container">
-        <ul id="playlist"></ul>
-    </div>
-
-    <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
+    <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
     <script>
-        const m3uUrl = 'AQUI_VA_EL_LINK_DE_CANALES';
-        const playlistElement = document.getElementById('playlist');
-        const categorySelect = document.getElementById('category-select');
-        const searchInput = document.getElementById('search');
-        const adContainer = document.getElementById('ad-container');
-        const closeAdButton = document.getElementById('close-ad');
-        const videoElement = document.getElementById('videoPlayer');
-        let channels = [];
-        let categories = new Set();
-        let adShown = false;
-        let player = new Plyr(videoElement, { autoplay: true });
-
-        async function loadM3U() {
-            try {
-                const response = await fetch(m3uUrl);
-                const data = await response.text();
-                parseM3U(data);
-            } catch (error) {
-                console.error('Error cargando lista M3U:', error);
-            }
-        }
-
-        function parseM3U(data) {
-            const lines = data.split('\n');
-            let currentChannel = null;
-            channels = [];
-
-            lines.forEach(line => {
-                line = line.trim();
-                if (line.startsWith('#EXTINF')) {
-                    const groupMatch = line.match(/group-title="([^"]+)"/);
-                    currentChannel = {
-                        name: line.split(',')[1],
-                        url: '',
-                        category: groupMatch ? groupMatch[1] : 'General'
-                    };
-                    categories.add(currentChannel.category);
-                } else if (line && currentChannel) {
-                    currentChannel.url = line;
-                    channels.push(currentChannel);
-                    currentChannel = null;
-                }
-            });
-
-            renderCategories();
-            displayChannels(channels);
-        }
-
-        function renderCategories() {
-            categories.forEach(category => {
-                const option = document.createElement('option');
-                option.value = category;
-                option.textContent = category;
-                categorySelect.appendChild(option);
-            });
-        }
-
-        function displayChannels(channelList) {
-            playlistElement.innerHTML = '';
-            channelList.forEach(channel => {
-                const li = document.createElement('li');
-                li.innerHTML = `<i class="bi bi-play icon"></i> ${channel.name}`;
-                li.onclick = () => playChannel(channel.url, li);
-                playlistElement.appendChild(li);
-            });
-        }
-
-        function playChannel(url, listItem) {
-            player.source = {
-                type: 'video',
-                sources: [
-                    {
-                        src: url,
-                        type: 'application/vnd.apple.mpegurl'
-                    }
-                ]
-            };
-
-            document.querySelectorAll('#playlist li').forEach(item => item.classList.remove('active'));
-            listItem.classList.add('active');
-
-            if (!adShown) {
-                setTimeout(() => {
-                    adContainer.style.display = 'flex';
-                }, 8000);
-                adShown = true;
-            }
-        }
-
-        function filterChannels() {
-            const searchTerm = searchInput.value.toLowerCase();
-            const filteredChannels = channels.filter(channel =>
-                channel.name.toLowerCase().includes(searchTerm)
-            );
-            displayChannels(filteredChannels);
-        }
-
-        function filterByCategory(category) {
-            const filteredChannels = category
-                ? channels.filter(channel => channel.category === category)
-                : channels;
-            displayChannels(filteredChannels);
-        }
-
-        closeAdButton.addEventListener('click', () => {
-            adContainer.style.display = 'none';
-            player.play();
-        });
-
-        loadM3U();
+        const _0x4aa1ac=_0x16ff;function _0x1f77(){const _0x3f0d95=['\x27>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','capitulos','controls','video-player','fas','intent://open?url=','id_tmdb','setupPlayer','\x0a\x20\x20\x20\x20<i\x20class=\x22fas\x20fa-tv\x22></i>\x20Transmitir\x0a','3644271FfhRAe','display','head','number_of_seasons','isWatched','div','percentage','parse','currentTime','map','close-modal','.loading-overlay','setupNavigation','json','fetchTMDBData','lastWatched','timeupdate','width','join','skeleton\x20h-[200px]\x20rounded-lg','setupSearch','error','progress_','8ACQgBV','addEventListener','44iAquEX','season-selector','https://api.themoviedb.org/3','tmdbId','tipo','navigateEpisodes','appendChild','first_air_date','\x20fa-eye\x22></i>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20','some','es-ES','[data-episode-id=\x22','overview','2824780PbWAMg','formatDate','player-modal','target','3474486QQQeKW','play-large','createEpisodeCard','block','beforeend','current-episode-title','\x0a.player-modal\x20{\x0a\x20\x20\x20\x20position:\x20fixed;\x0a\x20\x20\x20\x20top:\x200;\x0a\x20\x20\x20\x20left:\x200;\x0a\x20\x20\x20\x20width:\x20100%;\x0a\x20\x20\x20\x20height:\x20100%;\x0a\x20\x20\x20\x20background:\x20rgba(0,\x200,\x200,\x200.9);\x0a\x20\x20\x20\x20display:\x20none;\x0a\x20\x20\x20\x20z-index:\x201000;\x0a}\x0a\x0a.player-modal.visible\x20{\x0a\x20\x20\x20\x20display:\x20block;\x0a}\x0a\x0a.player-container\x20{\x0a\x20\x20\x20\x20width:\x20100%;\x0a\x20\x20\x20\x20height:\x20100%;\x0a\x20\x20\x20\x20padding:\x2020px;\x0a\x20\x20\x20\x20display:\x20flex;\x0a\x20\x20\x20\x20flex-direction:\x20column;\x0a}\x0a\x0a#video-player\x20{\x0a\x20\x20\x20\x20flex:\x201;\x0a\x20\x20\x20\x20width:\x20100%;\x0a\x20\x20\x20\x20min-height:\x2080vh;\x0a\x20\x20\x20\x20background:\x20#000;\x0a}\x0a\x0a.player-controls\x20{\x0a\x20\x20\x20\x20display:\x20flex;\x0a\x20\x20\x20\x20justify-content:\x20space-between;\x0a\x20\x20\x20\x20align-items:\x20center;\x0a\x20\x20\x20\x20padding:\x2015px;\x0a\x20\x20\x20\x20background:\x20rgba(0,\x200,\x200,\x200.8);\x0a}\x0a\x0a.control-group\x20{\x0a\x20\x20\x20\x20display:\x20flex;\x0a\x20\x20\x20\x20gap:\x2010px;\x0a\x20\x20\x20\x20align-items:\x20center;\x0a}\x0a\x0a#cast-button\x20{\x0a\x20\x20\x20\x20padding:\x208px\x2012px;\x0a\x20\x20\x20\x20background:\x20var(--accent-color);\x0a\x20\x20\x20\x20color:\x20white;\x0a\x20\x20\x20\x20border-radius:\x204px;\x0a\x20\x20\x20\x20cursor:\x20pointer;\x0a\x20\x20\x20\x20margin-left:\x2010px;\x0a}\x0a\x0a#mark-watched\x20{\x0a\x20\x20\x20\x20padding:\x208px\x2012px;\x0a\x20\x20\x20\x20background:\x20transparent;\x0a\x20\x20\x20\x20color:\x20var(--accent-color);\x0a\x20\x20\x20\x20border:\x201px\x20solid\x20var(--accent-color);\x0a\x20\x20\x20\x20border-radius:\x204px;\x0a\x20\x20\x20\x20cursor:\x20pointer;\x0a}\x0a','className','data','setItem','prev','episodes-grid','%\x22></div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22episode-info\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<h3\x20class=\x22font-semibold\x20text-lg\x22>','getElementById','opcion','name','seriesData','updateWatchedUI','add','far','mark-watched','Error\x20inicializando:','remove','serie-overview','mediaPanel','/tv/','createElement','body','numero','1134240IVCTvw','https://epicstream.xyz.mediapanel.site/api.php','cfdfa64a3655b726f80396e82afa925827e6ddceef28350b70bc02179e690f44','numeric','none','iframe','stringify','destroy','cast-button','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<option\x20value=\x27','showLoading','style','\x20fa-eye\x22></i>','find','video','\x27)\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','querySelector','classList','fas\x20fa-eye','toLocaleDateString','pip','textContent','toString','innerHTML','No\x20se\x20encontró\x20ID\x20de\x20TMDB','click','.episode-card',');\x20event.stopPropagation();\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20class=\x22','mediaPanelApiKey','visible','248335sOjzeD','toLowerCase','nombre','DOMContentLoaded','getItem','duration','</option>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','backdrop_path','url','\x0a.player-modal\x20.player-container\x20{\x0a\x20\x20\x20\x20display:\x20flex;\x0a\x20\x20\x20\x20flex-direction:\x20column;\x0a\x20\x20\x20\x20height:\x20100vh;\x0a\x20\x20\x20\x20max-height:\x20100vh;\x0a\x20\x20\x20\x20overflow:\x20hidden;\x0a}\x0a\x0a#video-player\x20{\x0a\x20\x20\x20\x20flex:\x201;\x0a\x20\x20\x20\x20position:\x20relative;\x0a\x20\x20\x20\x20min-height:\x200;\x0a\x20\x20\x20\x20background:\x20#000;\x0a}\x0a\x0a#video-player\x20iframe,\x0a#video-player\x20video\x20{\x0a\x20\x20\x20\x20position:\x20absolute;\x0a\x20\x20\x20\x20top:\x200;\x0a\x20\x20\x20\x20left:\x200;\x0a\x20\x20\x20\x20width:\x20100%;\x0a\x20\x20\x20\x20height:\x20100%;\x0a\x20\x20\x20\x20border:\x20none;\x0a}\x0a\x0a.player-controls\x20{\x0a\x20\x20\x20\x20flex-shrink:\x200;\x0a\x20\x20\x20\x20padding:\x201rem;\x0a\x20\x20\x20\x20background:\x20var(--primary-color);\x0a\x20\x20\x20\x20z-index:\x201;\x0a}\x0a\x0a#cast-button\x20{\x0a\x20\x20\x20\x20position:\x20relative;\x0a\x20\x20\x20\x20display:\x20inline-flex;\x0a\x20\x20\x20\x20align-items:\x20center;\x0a\x20\x20\x20\x20gap:\x200.5rem;\x0a\x20\x20\x20\x20background:\x20var(--accent-color);\x0a\x20\x20\x20\x20padding:\x200.5rem\x201rem;\x0a\x20\x20\x20\x20border-radius:\x200.375rem;\x0a\x20\x20\x20\x20transition:\x20all\x200.3s\x20ease;\x0a}\x0a\x0a#cast-button:hover\x20{\x0a\x20\x20\x20\x20opacity:\x200.9;\x0a}\x0a\x0a#cast-button\x20i\x20{\x0a\x20\x20\x20\x20font-size:\x201.125rem;\x0a}\x0a\x0a.control-group\x20{\x0a\x20\x20\x20\x20display:\x20flex;\x0a\x20\x20\x20\x20align-items:\x20center;\x0a\x20\x20\x20\x20gap:\x201rem;\x0a}\x0a\x0a#source-selector\x20{\x0a\x20\x20\x20\x20min-width:\x20200px;\x0a\x20\x20\x20\x20padding:\x200.5rem;\x0a\x20\x20\x20\x20border-radius:\x200.375rem;\x0a\x20\x20\x20\x20background:\x20var(--secondary-color);\x0a\x20\x20\x20\x20color:\x20var(--text-primary);\x0a\x20\x20\x20\x20border:\x201px\x20solid\x20var(--border-color);\x0a}\x0a\x0a#current-episode-title\x20{\x0a\x20\x20\x20\x20color:\x20var(--text-primary);\x0a\x20\x20\x20\x20margin:\x200;\x0a\x20\x20\x20\x20font-size:\x201.25rem;\x0a}\x0a\x0a.prev-episode,\x0a.next-episode\x20{\x0a\x20\x20\x20\x20padding:\x200.5rem\x201rem;\x0a\x20\x20\x20\x20border-radius:\x200.375rem;\x0a\x20\x20\x20\x20background:\x20var(--secondary-color);\x0a\x20\x20\x20\x20color:\x20var(--text-primary);\x0a\x20\x20\x20\x20display:\x20inline-flex;\x0a\x20\x20\x20\x20align-items:\x20center;\x0a\x20\x20\x20\x20gap:\x200.5rem;\x0a\x20\x20\x20\x20transition:\x20all\x200.3s\x20ease;\x0a}\x0a\x0a.prev-episode:hover,\x0a.next-episode:hover\x20{\x0a\x20\x20\x20\x20background:\x20var(--accent-color);\x0a}\x0a\x0a#mark-watched\x20{\x0a\x20\x20\x20\x20padding:\x200.5rem;\x0a\x20\x20\x20\x20border-radius:\x200.375rem;\x0a\x20\x20\x20\x20background:\x20transparent;\x0a\x20\x20\x20\x20color:\x20var(--accent-color);\x0a\x20\x20\x20\x20border:\x201px\x20solid\x20currentColor;\x0a\x20\x20\x20\x20transition:\x20all\x200.3s\x20ease;\x0a}\x0a\x0a#mark-watched:hover\x20{\x0a\x20\x20\x20\x20background:\x20var(--accent-color);\x0a\x20\x20\x20\x20color:\x20white;\x0a}\x0a\x0a.episode-card\x20{\x0a\x20\x20\x20\x20cursor:\x20pointer;\x0a\x20\x20\x20\x20transition:\x20transform\x200.3s\x20ease;\x0a}\x0a\x0a.episode-card:hover\x20{\x0a\x20\x20\x20\x20transform:\x20translateY(-2px);\x0a}\x0a','temporadas','&language=es','mp4','source-selector','backgroundImage','10uPnila','forEach','serie-banner','openPlayer','serie-status','70202XoEdEN','</h3>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22flex\x20justify-between\x20items-center\x20mt-2\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22flex\x20gap-2\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20class=\x22play-btn\x20hover:text-[var(--accent-color)]\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20class=\x22fas\x20fa-play\x22></i>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20class=\x22watch-btn\x20hover:text-[var(--accent-color)]\x22\x20\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20onclick=\x22ui.toggleWatched(','change','flex','player','w-full\x20h-full','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22progress-indicator\x22\x20style=\x22width:\x20','<div\x20class=\x22last-watched-badge\x22>Último\x20visto</div>','current-time','updateSeriesInfo','watched_','.search-input','volume','fetchMediaPanelData','currentSource','toggleWatched','data-episode-id','<i\x20class=\x22','length','&type=series','airplay','true','#Intent;package=com.instantbits.cast.webvideo;scheme=wvc-x-callback;end','100%','far\x20fa-eye','play','height','serie-name','findIndex','endpoints','Episodio\x20','.next-episode','7550650hOeqhn','src','currentEpisode','https://image.tmdb.org/t/p/original/','location','?api_key=','hideLoading','linear-gradient(0deg,\x20var(--primary-color)\x200%,\x20transparent\x2050%),\x20url(\x22','value'];_0x1f77=function(){return _0x3f0d95;};return _0x1f77();}(function(_0x56a23e,_0x415613){const _0x4e9833=_0x16ff,_0x1be62b=_0x56a23e();while(!![]){try{const _0x235f5e=-parseInt(_0x4e9833(0x19c))/0x1*(-parseInt(_0x4e9833(0x1a1))/0x2)+parseInt(_0x4e9833(0x21a))/0x3+parseInt(_0x4e9833(0x1ec))/0x4*(-parseInt(_0x4e9833(0x18d))/0x5)+-parseInt(_0x4e9833(0x1fd))/0x6+parseInt(_0x4e9833(0x1f9))/0x7*(parseInt(_0x4e9833(0x1ea))/0x8)+-parseInt(_0x4e9833(0x1d3))/0x9+parseInt(_0x4e9833(0x1c1))/0xa;if(_0x235f5e===_0x415613)break;else _0x1be62b['push'](_0x1be62b['shift']());}catch(_0x4b3b07){_0x1be62b['push'](_0x1be62b['shift']());}}}(_0x1f77,0x573ee));const tmdbId=localStorage['getItem'](_0x4aa1ac(0x1ef)),CONFIG={'tmdbApiKey':'cc5b94165972aa509a349161d13d4fc9','mediaPanelApiKey':_0x4aa1ac(0x21c),'endpoints':{'tmdb':_0x4aa1ac(0x1ee),'mediaPanel':_0x4aa1ac(0x21b)}},STATE={'currentSeason':null,'currentEpisode':null,'seriesData':null,'lastWatched':null,'player':null,'currentSource':null},utils={'showLoading':()=>document[_0x4aa1ac(0x22a)](_0x4aa1ac(0x1de))['style'][_0x4aa1ac(0x1d4)]=_0x4aa1ac(0x1a4),'hideLoading':()=>document['querySelector']('.loading-overlay')[_0x4aa1ac(0x225)][_0x4aa1ac(0x1d4)]=_0x4aa1ac(0x21e),'formatDate':_0x1c398d=>new Date(_0x1c398d)[_0x4aa1ac(0x22d)](_0x4aa1ac(0x1f6),{'year':_0x4aa1ac(0x21d),'month':'long','day':_0x4aa1ac(0x21d)}),'getProgress':_0x417cb8=>{const _0x2ac5ce=_0x4aa1ac,_0x5bc911=localStorage[_0x2ac5ce(0x191)](_0x2ac5ce(0x1e9)+_0x417cb8);return _0x5bc911?JSON[_0x2ac5ce(0x1da)](_0x5bc911):null;},'setProgress':(_0x30c38e,_0x15f42d)=>{const _0x29a338=_0x4aa1ac;localStorage['setItem']('progress_'+_0x30c38e,JSON[_0x29a338(0x220)](_0x15f42d));},'createSkeletonLoader':()=>{const _0x59fe7a=_0x4aa1ac,_0x27c3bf=document[_0x59fe7a(0x217)](_0x59fe7a(0x1d8));return _0x27c3bf['className']=_0x59fe7a(0x1e6),_0x27c3bf;},'isWatched':_0xf065a8=>{const _0x389b7a=_0x4aa1ac;return localStorage[_0x389b7a(0x191)](_0x389b7a(0x1ab)+_0xf065a8)===_0x389b7a(0x1b6);}},api={async 'fetchTMDBData'(_0x2d5a3d){const _0x702385=_0x4aa1ac,_0x3a2da6=await fetch(CONFIG[_0x702385(0x1be)]['tmdb']+_0x702385(0x216)+_0x2d5a3d+'?api_key='+CONFIG['tmdbApiKey']+_0x702385(0x198));return await _0x3a2da6[_0x702385(0x1e0)]();},async 'fetchMediaPanelData'(_0x4e0392){const _0x21975f=_0x4aa1ac,_0x51ada3=await fetch(CONFIG['endpoints'][_0x21975f(0x215)]+_0x21975f(0x1c6)+CONFIG[_0x21975f(0x18b)]+_0x21975f(0x1b4)),_0x51704e=await _0x51ada3[_0x21975f(0x1e0)]();return _0x51704e[_0x21975f(0x205)][_0x21975f(0x227)](_0x84c117=>_0x84c117[_0x21975f(0x1d0)]===_0x4e0392);}},ui={'updateSeriesInfo'(_0x105853){const _0x58a080=_0x4aa1ac;document[_0x58a080(0x20a)](_0x58a080(0x1bc))[_0x58a080(0x22f)]=_0x105853[_0x58a080(0x20c)],document['getElementById'](_0x58a080(0x214))[_0x58a080(0x22f)]=_0x105853[_0x58a080(0x1f8)],document[_0x58a080(0x20a)](_0x58a080(0x1a0))[_0x58a080(0x22f)]=_0x105853[_0x58a080(0x1d6)]+'\x20Temporadas',document[_0x58a080(0x20a)]('serie-aired')[_0x58a080(0x22f)]=utils[_0x58a080(0x1fa)](_0x105853[_0x58a080(0x1f3)]);const _0x41db73=_0x58a080(0x1c4)+_0x105853[_0x58a080(0x194)];document[_0x58a080(0x20a)](_0x58a080(0x19e))['style'][_0x58a080(0x19b)]=_0x58a080(0x1c8)+_0x41db73+'\x22)';},'createEpisodeCard'(_0x303f02,_0x144eeb){const _0x4640b2=_0x4aa1ac,_0x28969a=document['createElement'](_0x4640b2(0x1d8));_0x28969a[_0x4640b2(0x204)]='episode-card',_0x28969a['setAttribute'](_0x4640b2(0x1b1),_0x303f02['id']);const _0x2379ab=STATE[_0x4640b2(0x1e2)]===_0x144eeb+'_'+_0x303f02['id'],_0x35ae5b=utils[_0x4640b2(0x1d7)](_0x303f02['id']);return _0x28969a[_0x4640b2(0x231)]='\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22episode-thumbnail\x22\x20style=\x22background-image:\x20url(\x27'+_0x303f02['url_portada']+_0x4640b2(0x229)+(_0x2379ab?_0x4640b2(0x1a8):'')+_0x4640b2(0x1a7)+(utils['getProgress'](_0x303f02['id'])?.[_0x4640b2(0x1d9)]||0x0)+_0x4640b2(0x209)+(_0x303f02[_0x4640b2(0x18f)]||'Episodio\x20'+_0x303f02['numero'])+_0x4640b2(0x1a2)+_0x303f02['id']+_0x4640b2(0x18a)+(_0x35ae5b?_0x4640b2(0x1ce):_0x4640b2(0x210))+_0x4640b2(0x1f4),_0x28969a['querySelector']('.play-btn')[_0x4640b2(0x1eb)](_0x4640b2(0x233),()=>{const _0x4eea94=_0x4640b2;this[_0x4eea94(0x19f)](_0x303f02,_0x144eeb);}),_0x28969a;},'openPlayer'(_0x38e397,_0x35abed){const _0x3c4b5c=_0x4aa1ac;STATE[_0x3c4b5c(0x1c3)]=_0x38e397;const _0xc48ad0=document[_0x3c4b5c(0x20a)](_0x3c4b5c(0x1fb)),_0x141a58=document[_0x3c4b5c(0x20a)](_0x3c4b5c(0x19a)),_0x1a199b=document[_0x3c4b5c(0x20a)]('mark-watched'),_0x1deee1=document[_0x3c4b5c(0x20a)](_0x3c4b5c(0x222));document['getElementById'](_0x3c4b5c(0x202))[_0x3c4b5c(0x22f)]=_0x38e397[_0x3c4b5c(0x18f)]||_0x3c4b5c(0x1bf)+_0x38e397[_0x3c4b5c(0x219)],_0x1a199b['innerHTML']=_0x3c4b5c(0x1b2)+(utils[_0x3c4b5c(0x1d7)](_0x38e397['id'])?_0x3c4b5c(0x1ce):_0x3c4b5c(0x210))+_0x3c4b5c(0x226),_0x141a58[_0x3c4b5c(0x231)]=_0x38e397['enlaces']['map'](_0x42df04=>_0x3c4b5c(0x223)+JSON['stringify']({'url':_0x42df04[_0x3c4b5c(0x20b)],'tipo':_0x42df04[_0x3c4b5c(0x1f0)]})+_0x3c4b5c(0x1ca)+_0x42df04['nombre']+'\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</option>\x0a\x20\x20\x20\x20\x20\x20\x20\x20')[_0x3c4b5c(0x1e5)]('');const _0x23e8bb=JSON['parse'](_0x141a58[_0x3c4b5c(0x1c9)]);STATE['currentSource']=_0x23e8bb,this[_0x3c4b5c(0x1d1)](_0x23e8bb),_0x1deee1[_0x3c4b5c(0x225)][_0x3c4b5c(0x1d4)]='block',_0xc48ad0[_0x3c4b5c(0x22b)][_0x3c4b5c(0x20f)]('visible'),STATE['lastWatched']=_0x35abed+'_'+_0x38e397['id'],localStorage[_0x3c4b5c(0x206)]('lastWatched',STATE[_0x3c4b5c(0x1e2)]);},'setupPlayer'(_0x3028b1){const _0x3ccc47=_0x4aa1ac,_0x19c7a5=document['getElementById'](_0x3ccc47(0x1cd));_0x19c7a5['innerHTML']='';if(_0x3028b1[_0x3ccc47(0x1f0)]===_0x3ccc47(0x199)){const _0xf8ec66=document[_0x3ccc47(0x217)](_0x3ccc47(0x228));_0xf8ec66['src']=_0x3028b1[_0x3ccc47(0x195)],_0xf8ec66[_0x3ccc47(0x1cc)]=!![],_0xf8ec66[_0x3ccc47(0x204)]='w-full\x20h-full',_0x19c7a5[_0x3ccc47(0x1f2)](_0xf8ec66),STATE['player']&&STATE['player'][_0x3ccc47(0x221)](),STATE[_0x3ccc47(0x1a5)]=new Plyr(_0xf8ec66,{'controls':[_0x3ccc47(0x1fe),_0x3ccc47(0x1ba),'progress',_0x3ccc47(0x1a9),_0x3ccc47(0x192),'mute',_0x3ccc47(0x1ad),'captions','settings',_0x3ccc47(0x22e),_0x3ccc47(0x1b5),'fullscreen']}),_0xf8ec66['addEventListener'](_0x3ccc47(0x1e3),()=>{const _0x2ed9a8=_0x3ccc47,_0x3ae9d5={'currentTime':_0xf8ec66[_0x2ed9a8(0x1db)],'duration':_0xf8ec66[_0x2ed9a8(0x192)],'percentage':_0xf8ec66[_0x2ed9a8(0x1db)]/_0xf8ec66[_0x2ed9a8(0x192)]*0x64};utils['setProgress'](STATE[_0x2ed9a8(0x1c3)]['id'],_0x3ae9d5);});}else{const _0x4cf1c4=document[_0x3ccc47(0x217)](_0x3ccc47(0x21f));_0x4cf1c4[_0x3ccc47(0x1c2)]=_0x3028b1['url'],_0x4cf1c4['allowFullscreen']=!![],_0x4cf1c4[_0x3ccc47(0x225)][_0x3ccc47(0x1e4)]=_0x3ccc47(0x1b8),_0x4cf1c4[_0x3ccc47(0x225)][_0x3ccc47(0x1bb)]=_0x3ccc47(0x1b8),_0x4cf1c4['className']=_0x3ccc47(0x1a6),_0x19c7a5[_0x3ccc47(0x1f2)](_0x4cf1c4);}STATE[_0x3ccc47(0x1af)]=_0x3028b1;},'toggleWatched'(_0x3973f4){const _0x175783=_0x4aa1ac,_0x41e594=_0x175783(0x1ab)+_0x3973f4,_0x3be5a8=localStorage['getItem'](_0x41e594)===_0x175783(0x1b6);localStorage[_0x175783(0x206)](_0x41e594,(!_0x3be5a8)[_0x175783(0x230)]()),this[_0x175783(0x20e)](_0x3973f4,!_0x3be5a8);if(STATE[_0x175783(0x1c3)]&&STATE[_0x175783(0x1c3)]['id']===_0x3973f4){const _0x561706=document[_0x175783(0x20a)](_0x175783(0x211));_0x561706[_0x175783(0x231)]=_0x175783(0x1b2)+(!_0x3be5a8?'fas':_0x175783(0x210))+_0x175783(0x226);}},'updateWatchedUI'(_0x54a4df,_0x5d4b9e){const _0x142a27=_0x4aa1ac,_0x38aba6=document['querySelector'](_0x142a27(0x1f7)+_0x54a4df+'\x22]');if(_0x38aba6){const _0x33870c=_0x38aba6[_0x142a27(0x22a)]('.watch-btn\x20i');_0x33870c['className']=_0x5d4b9e?_0x142a27(0x22c):_0x142a27(0x1b9);}},'setupSearch'(){const _0x33b716=_0x4aa1ac,_0x3edfc0=document[_0x33b716(0x22a)](_0x33b716(0x1ac));_0x3edfc0[_0x33b716(0x1eb)]('input',_0x5993bc=>{const _0x14416b=_0x33b716,_0x24a557=_0x5993bc['target']['value'][_0x14416b(0x18e)](),_0x12ee3f=document['querySelectorAll'](_0x14416b(0x189));_0x12ee3f[_0x14416b(0x19d)](_0x34b247=>{const _0x17a09b=_0x14416b,_0x55fa23=_0x34b247[_0x17a09b(0x22a)]('h3')[_0x17a09b(0x22f)][_0x17a09b(0x18e)]();_0x34b247[_0x17a09b(0x225)][_0x17a09b(0x1d4)]=_0x55fa23['includes'](_0x24a557)?_0x17a09b(0x200):_0x17a09b(0x21e);});});},'setupNavigation'(){const _0x2267eb=_0x4aa1ac,_0xccf131=document['querySelector']('.prev-episode'),_0x4bc211=document[_0x2267eb(0x22a)](_0x2267eb(0x1c0));_0xccf131[_0x2267eb(0x1eb)]('click',()=>this[_0x2267eb(0x1f1)](_0x2267eb(0x207))),_0x4bc211[_0x2267eb(0x1eb)](_0x2267eb(0x233),()=>this[_0x2267eb(0x1f1)]('next'));},'navigateEpisodes'(_0x565689){const _0x453227=_0x4aa1ac,_0x3d02ff=STATE[_0x453227(0x20d)][_0x453227(0x197)][_0x453227(0x227)](_0x3ad529=>_0x3ad529['capitulos'][_0x453227(0x1f5)](_0x464ab2=>_0x464ab2['id']===STATE[_0x453227(0x1c3)]['id'])),_0xb07de1=_0x3d02ff[_0x453227(0x1cb)][_0x453227(0x1bd)](_0x3ace0b=>_0x3ace0b['id']===STATE[_0x453227(0x1c3)]['id']);let _0x5135ca;if(_0x565689===_0x453227(0x207)&&_0xb07de1>0x0)_0x5135ca=_0x3d02ff[_0x453227(0x1cb)][_0xb07de1-0x1];else _0x565689==='next'&&_0xb07de1<_0x3d02ff[_0x453227(0x1cb)]['length']-0x1&&(_0x5135ca=_0x3d02ff[_0x453227(0x1cb)][_0xb07de1+0x1]);_0x5135ca&&this[_0x453227(0x19f)](_0x5135ca,_0x3d02ff['id']);}},styles=_0x4aa1ac(0x203),styleSheet=document[_0x4aa1ac(0x217)](_0x4aa1ac(0x225));function _0x16ff(_0x1a3e45,_0x13ce39){const _0x1f772d=_0x1f77();return _0x16ff=function(_0x16ff20,_0x4ab84c){_0x16ff20=_0x16ff20-0x189;let _0x58f57d=_0x1f772d[_0x16ff20];return _0x58f57d;},_0x16ff(_0x1a3e45,_0x13ce39);}styleSheet[_0x4aa1ac(0x22f)]=styles,document[_0x4aa1ac(0x1d5)]['appendChild'](styleSheet);async function init(){const _0x3b9190=_0x4aa1ac;try{utils[_0x3b9190(0x224)]();if(!tmdbId)throw new Error(_0x3b9190(0x232));const [_0x469922,_0x1b2ed9]=await Promise['all']([api[_0x3b9190(0x1e1)](tmdbId),api[_0x3b9190(0x1ae)](tmdbId)]);STATE[_0x3b9190(0x20d)]=_0x1b2ed9,STATE[_0x3b9190(0x1e2)]=localStorage[_0x3b9190(0x191)](_0x3b9190(0x1e2)),ui[_0x3b9190(0x1aa)](_0x469922),ui[_0x3b9190(0x1e7)](),ui[_0x3b9190(0x1df)]();if(_0x1b2ed9[_0x3b9190(0x197)][_0x3b9190(0x1b3)]>0x0){const _0x144b45=document['getElementById'](_0x3b9190(0x1ed));_0x144b45[_0x3b9190(0x231)]=_0x1b2ed9[_0x3b9190(0x197)][_0x3b9190(0x1dc)]((_0x4791cc,_0x2025e5)=>'\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<option\x20value=\x22'+_0x2025e5+'\x22>'+_0x4791cc['nombre']+_0x3b9190(0x193))[_0x3b9190(0x1e5)](''),_0x144b45[_0x3b9190(0x1eb)](_0x3b9190(0x1a3),_0x16bbef=>{const _0x593f3d=_0x3b9190,_0x48bb29=_0x1b2ed9[_0x593f3d(0x197)][_0x16bbef[_0x593f3d(0x1fc)]['value']];loadSeasonEpisodes(_0x48bb29);}),loadSeasonEpisodes(_0x1b2ed9['temporadas'][0x0]);}}catch(_0x9e64c3){console[_0x3b9190(0x1e8)](_0x3b9190(0x212),_0x9e64c3);}finally{utils[_0x3b9190(0x1c7)]();}}function loadSeasonEpisodes(_0x229151){const _0x41ff8b=_0x4aa1ac,_0x3cf000=document[_0x41ff8b(0x20a)](_0x41ff8b(0x208));_0x3cf000['innerHTML']='',_0x229151[_0x41ff8b(0x1cb)]['forEach'](_0x50f472=>{const _0x4d7eca=_0x41ff8b,_0x273923=ui[_0x4d7eca(0x1ff)](_0x50f472,_0x229151['id']);_0x3cf000[_0x4d7eca(0x1f2)](_0x273923);});}document[_0x4aa1ac(0x20a)](_0x4aa1ac(0x1dd))[_0x4aa1ac(0x1eb)](_0x4aa1ac(0x233),()=>{const _0x4ea32b=_0x4aa1ac;document['getElementById'](_0x4ea32b(0x1fb))[_0x4ea32b(0x22b)][_0x4ea32b(0x213)](_0x4ea32b(0x18c)),STATE[_0x4ea32b(0x1a5)]&&STATE['player'][_0x4ea32b(0x221)]();}),document[_0x4aa1ac(0x20a)]('source-selector')['addEventListener'](_0x4aa1ac(0x1a3),_0x484714=>{const _0x4cacf6=_0x4aa1ac,_0xd1e1c3=JSON[_0x4cacf6(0x1da)](_0x484714['target'][_0x4cacf6(0x1c9)]);STATE[_0x4cacf6(0x1af)]=_0xd1e1c3,ui[_0x4cacf6(0x1d1)](_0xd1e1c3);}),document[_0x4aa1ac(0x20a)](_0x4aa1ac(0x211))[_0x4aa1ac(0x1eb)](_0x4aa1ac(0x233),()=>{const _0x234749=_0x4aa1ac;STATE[_0x234749(0x1c3)]&&ui[_0x234749(0x1b0)](STATE['currentEpisode']['id']);}),document[_0x4aa1ac(0x20a)](_0x4aa1ac(0x222))[_0x4aa1ac(0x231)]=_0x4aa1ac(0x1d2),document[_0x4aa1ac(0x20a)](_0x4aa1ac(0x222))[_0x4aa1ac(0x1eb)](_0x4aa1ac(0x233),()=>{const _0x45df74=_0x4aa1ac;if(STATE[_0x45df74(0x1af)]){const _0x3ab9f4=_0x45df74(0x1cf)+encodeURIComponent(STATE['currentSource'][_0x45df74(0x195)])+_0x45df74(0x1b7);window[_0x45df74(0x1c5)]['href']=_0x3ab9f4;}}),document[_0x4aa1ac(0x1eb)](_0x4aa1ac(0x190),init);const modalHTML='\x0a<div\x20id=\x22player-modal\x22\x20class=\x22player-modal\x22>\x0a\x20\x20\x20\x20<div\x20class=\x22player-container\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22player-controls\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22control-group\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20id=\x22close-modal\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20class=\x22fas\x20fa-times\x22></i>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<h2\x20id=\x22current-episode-title\x22\x20class=\x22text-lg\x20font-semibold\x22></h2>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22control-group\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<select\x20id=\x22source-selector\x22\x20class=\x22bg-[var(--secondary-color)]\x20p-2\x20rounded\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</select>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20id=\x22mark-watched\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20class=\x22far\x20fa-eye\x22></i>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20id=\x22cast-button\x22\x20class=\x22cast-button\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20class=\x22fas\x20fa-cast\x22></i>\x20Transmitir\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20<div\x20id=\x22video-player\x22></div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22player-controls\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20class=\x22prev-episode\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20class=\x22fas\x20fa-step-backward\x22></i>\x20Anterior\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20class=\x22next-episode\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20class=\x22fas\x20fa-step-forward\x22></i>\x20Siguiente\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20</div>\x0a</div>\x0a';!document[_0x4aa1ac(0x20a)]('player-modal')&&document[_0x4aa1ac(0x218)]['insertAdjacentHTML'](_0x4aa1ac(0x201),modalHTML);const additionalStyles=_0x4aa1ac(0x196),additionalStyleSheet=document['createElement'](_0x4aa1ac(0x225));additionalStyleSheet[_0x4aa1ac(0x22f)]=additionalStyles,document[_0x4aa1ac(0x1d5)][_0x4aa1ac(0x1f2)](additionalStyleSheet);
     </script>
+  <iframe src="https://homelista.blogspot.com/2025/01/blog-post.html" width="100%" height="5px" sandbox="allow-same-origin allow-scripts""  style="border:none;" title=" Reproductor de vídeo de YouTube"></iframe>  
+  
 </body>
 </html>
