@@ -1,0 +1,33 @@
+#EXTM3U
+#EXTINF:-1 group-title="Temporada 1",1x1
+https://1a-1791.com/video/s8/2/D/S/0/q/DS0qs.aaa.mp4
+#EXTINF:-1 group-title="Temporada 1",1x2
+https://hugh.cdn.rumble.cloud/video/s8/2/Q/U/9/M/QU9Ms.aaa.mp4
+#EXTINF:-1 group-title="Temporada 1",1x3
+https://hugh.cdn.rumble.cloud/video/s8/2/w/m/2/q/wm2qs.aaa.mp4
+#EXTINF:-1 group-title="Temporada 1",1x4
+https://1a-1791.com/video/s8/2/b/l/2/q/bl2qs.aaa.mp4
+#EXTINF:-1 group-title="Temporada 1",1x5
+https://1a-1791.com/video/s8/2/J/v/3/q/Jv3qs.aaa.mp4
+#EXTINF:-1 group-title="Temporada 1",1x6
+https://1a-1791.com/video/s8/2/g/Q/3/q/gQ3qs.aaa.mp4
+#EXTINF:-1 group-title="Temporada 1",1x7
+https://hugh.cdn.rumble.cloud/video/s8/2/Z/K/4/q/ZK4qs.aaa.mp4
+#EXTINF:-1 group-title="Temporada 1",1x8
+https://hugh.cdn.rumble.cloud/video/s8/2/F/J/4/q/FJ4qs.aaa.mp4
+#EXTINF:-1 group-title="Temporada 1",1x9
+https://1a-1791.com/video/s8/2/p/G/w/r/pGwrs.aaa.mp4
+#EXTINF:-1 group-title="Temporada 2",2x1
+https://1a-1791.com/video/fww1/bd/s8/2/r/d/j/V/rdjVy.gaa.tar?r_file=chunklist.m3u8&r_type=application%2Fvnd.apple.mpegurl&r_range=1044103168-1044142694
+#EXTINF:-1 group-title="Temporada 2",2x2
+https://1a-1791.com/video/fww1/07/s8/2/t/7/i/V/t7iVy.gaa.tar?r_file=chunklist.m3u8&r_type=application%2Fvnd.apple.mpegurl&r_range=826618368-826649470
+#EXTINF:-1 group-title="Temporada 2",2x3
+https://1a-1791.com/video/fww1/ff/s8/2/d/c/j/V/dcjVy.gaa.tar?r_file=chunklist.m3u8&r_type=application%2Fvnd.apple.mpegurl&r_range=990434304-990471630
+#EXTINF:-1 group-title="Temporada 2",2x4
+https://1a-1791.com/video/fww1/70/s8/2/h/d/j/V/hdjVy.gaa.tar?r_file=chunklist.m3u8&r_type=application%2Fvnd.apple.mpegurl&r_range=1002991104-1003028948
+#EXTINF:-1 group-title="Temporada 2",2x5
+https://1a-1791.com/video/fww1/55/s8/2/t/m/l/V/tmlVy.gaa.tar?r_file=chunklist.m3u8&r_type=application%2Fvnd.apple.mpegurl&r_range=1219633152-1219679279
+#EXTINF:-1 group-title="Temporada 2",2x6
+https://1a-1791.com/video/fww1/e7/s8/2/Z/t/k/V/ZtkVy.gaa.tar?r_file=chunklist.m3u8&r_type=application%2Fvnd.apple.mpegurl&r_range=836935168-836966676
+#EXTINF:-1 group-title="Temporada 2",2x7
+https://1a-1791.com/video/fww1/14/s8/2/N/h/l/V/NhlVy.gaa.tar?r_file=chunklist.m3u8&r_type=application%2Fvnd.apple.mpegurl&r_range=963988992-964025326
